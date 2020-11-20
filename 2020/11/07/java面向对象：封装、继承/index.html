@@ -101,13 +101,9 @@
 <li>this是一个引用/变量，this变量中保存了内存地址指向自身，this存储在JVM堆内存java对象内部</li>
 <li>每创建一个对象就有一个this</li>
 <li>this可以出现在“实例方法”中，指向当前执行动作的对象</li>
-</ol>
-</li>
-</ul>
-<ol start="5">
 <li>this不能使用在带有static关键字的方法中</li>
 </ol>
-<ul>
+</li>
 <li><p>没有static关键字的方法称为“实例方法”，使用“引用.”访问</p>
 <p>没有static关键字的方法称为“实例变量”</p>
 </li>
@@ -130,6 +126,7 @@
 </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class Date &#123;</span><br><span class="line">    private int year;</span><br><span class="line">    private int month;</span><br><span class="line">    private int day;</span><br><span class="line">    public Date()&#123;      &#x2F;&#x2F;需求：调用无参数构造方法时，默认日期为“1970-1-1”</span><br><span class="line">        this(1970,1,1);     &#x2F;&#x2F;不创建对象，又能调用其它构造方法</span><br><span class="line">    &#125;</span><br><span class="line">    public Date(int year,int month,int day)&#123;</span><br><span class="line">        this.year &#x3D; year;</span><br><span class="line">        this.month &#x3D; month;</span><br><span class="line">        this.day &#x3D; day;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Date d1 &#x3D; new Date();</span><br><span class="line">        Date d2 &#x3D; new Date(1998,1,22);</span><br><span class="line">        System.out.println(d1.year + &quot;年&quot; + d1.month + &quot;月&quot; + d1.day + &quot;日&quot;);</span><br><span class="line">        System.out.println(d2.year + &quot;年&quot; + d2.month + &quot;月&quot; + d2.day + &quot;日&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;setter和getter方法省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
 <ul>
 <li>练习题</li>
