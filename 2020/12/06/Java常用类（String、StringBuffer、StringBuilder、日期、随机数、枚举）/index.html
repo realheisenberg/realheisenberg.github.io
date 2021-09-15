@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.5"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.5"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><title>Java常用类（String、StringBuffer/StringBuilder、日期、随机数、枚举） | realheisenberg</title><meta name="generator" content="Hexo 5.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java常用类（String、StringBuffer/StringBuilder、日期、随机数、枚举）</h1><a id="logo" href="/.">realheisenberg</a><p class="description">liusai201@mails.ucas.ac.cn</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Java常用类（String、StringBuffer/StringBuilder、日期、随机数、枚举）</h1><div class="post-meta"><a href="/2020/12/06/Java%E5%B8%B8%E7%94%A8%E7%B1%BB%EF%BC%88String%E3%80%81StringBuffer%E3%80%81StringBuilder%E3%80%81%E6%97%A5%E6%9C%9F%E3%80%81%E9%9A%8F%E6%9C%BA%E6%95%B0%E3%80%81%E6%9E%9A%E4%B8%BE%EF%BC%89/#comments" class="comment-count"></a><p><span class="date">Dec 06, 2020</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>Hits</i></i></span></p></div><div class="post-content"><h2 id="五-常用类"><a href="#五-常用类" class="headerlink" title="五. 常用类"></a>五. 常用类</h2><h3 id="java-lang-String类"><a href="#java-lang-String类" class="headerlink" title="java.lang.String类"></a>java.lang.String类</h3><ol>
+<li>java中双引号括起来的字符串不可变</li>
+<li>双引号括起来的字符串都是直接存储在方法区的“字符串常量池”中的（字符串在实际开发中使用频繁，为了提高执行效率）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Test01 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        &#x2F;&#x2F;下面两行代码表示在字符串常量池中创建了3个字符串对象</span><br><span class="line">        String s1 &#x3D; &quot;abc&quot;;</span><br><span class="line">        &#x2F;&#x2F;使用字符串常量池中已有的&quot;abc&quot;，创建&quot;xy&quot;，合并后创建&quot;abcxy&quot;</span><br><span class="line">        String s2 &#x3D; &quot;abc&quot; + &quot;xy&quot;;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;栈main方法-&gt;堆String对象-&gt;方法区字符串常量池&quot;xy&quot;</span><br><span class="line">        String s3 &#x3D; new String(&quot;xy&quot;);</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;以下两行代码共创建了三个对象：字符创常量池中的&quot;heisenberg&quot;对象、堆内存中两个对象</span><br><span class="line">        String s4 &#x3D; &quot;heisenberg&quot;;</span><br><span class="line">        String s5 &#x3D; &quot;heisenberg&quot;;		&#x2F;&#x2F;&quot;heisenberg&quot;已经存在</span><br><span class="line">        System.out.println(s4 &#x3D;&#x3D; s5);       &#x2F;&#x2F;true，两变量保存内存地址相同</span><br><span class="line">        </span><br><span class="line">        String s6 &#x3D; new String(&quot;heisenberg&quot;);		&#x2F;&#x2F;s6、s7指向对象不同</span><br><span class="line">        String s7 &#x3D; new String(&quot;heisenberg&quot;);		&#x2F;&#x2F;两对象保存地址相同</span><br><span class="line">        System.out.println(s6 &#x3D;&#x3D; s7);       &#x2F;&#x2F;false</span><br><span class="line">        System.out.println(s6.equals(s7));      &#x2F;&#x2F;true</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h4 id="常用构造方法"><a href="#常用构造方法" class="headerlink" title="常用构造方法"></a>常用构造方法</h4></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;String(byte[] bytes)方法：将数组中元素转换为ASCII码对应字符</span><br><span class="line">byte[] bytes &#x3D; &#123;97,98,99&#125;;		&#x2F;&#x2F;97：a、98：b、99：c</span><br><span class="line">String s &#x3D; new String(bytes);</span><br><span class="line">System.out.println(s);		&#x2F;&#x2F;输出abc</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;String(byet[] byets,int offset,int length)方法：(字节数组，起始下标，长度)</span><br><span class="line">&#x2F;&#x2F;将byte数组中的一部分转换成字符串</span><br><span class="line">String s2 &#x3D; new String(bytes,1,2);</span><br><span class="line">System.out.println(s2);		&#x2F;&#x2F;输出bc</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;String(char[] value)方法：将char数组全部转换成字符串</span><br><span class="line">char[] value &#x3D; &#123;&#39;E&#39;,&#39;l&#39;,&#39;s&#39;,&#39;o&#39;,&#39;n&#39;&#125;;</span><br><span class="line">String s3 &#x3D; new String(value);</span><br><span class="line">System.out.println(s3);		&#x2F;&#x2F;输出Elson</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;String(char[] value,int offset,int count)方法：(字符数组，起始下标，长度)</span><br><span class="line">String s4 &#x3D; new String(value,2,3);</span><br><span class="line">System.out.println(s4);		&#x2F;&#x2F;输出son</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4></li>
+</ul>
+<ol>
+<li>char charAt(int index)方法（掌握）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char c &#x3D; &quot;中国人&quot;.charAt(1);		&#x2F;&#x2F;&quot;中国人&quot;是一个String对象</span><br><span class="line">System.out.println(c);		&#x2F;&#x2F;输出下标为1的元素&#39;国&#39;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>int compareTo(String anotherString)方法（了解）</p>
+<p>用前面字符串的元素和后面字符串元素（ASC码）依次比较，直到分出大小</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int result1 &#x3D; &quot;abc&quot;.compareTo(&quot;abc&quot;);</span><br><span class="line">System.out.println(result1);        &#x2F;&#x2F;等于0，前后相同</span><br><span class="line">int result2 &#x3D; &quot;abc&quot;.compareTo(&quot;abd&quot;);</span><br><span class="line">System.out.println(result2);        &#x2F;&#x2F;-1（小于0），前小后大</span><br><span class="line">int result3 &#x3D; &quot;abc&quot;.compareTo(&quot;abb&quot;);</span><br><span class="line">System.out.println(result3);        &#x2F;&#x2F;1（大于0），前大后小</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>boolean contains(CharSequence s)方法（掌握）</p>
+<p>判断前面字符串中是否包含后面字符串，String的父接口就是：CharSequence</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;heisenberg&quot;.contains(&quot;berg&quot;));		&#x2F;&#x2F;true</span><br><span class="line">System.out.println(&quot;http:&#x2F;&#x2F;&quot;.contains(&quot;https&quot;));		&#x2F;&#x2F;false</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>boolean endsWith(String suffix)方法（掌握）</p>
+<p>判断当前字符串是否以某字符串结尾</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;hello.java&quot;.endsWith(&quot;.java&quot;));		&#x2F;&#x2F;true</span><br><span class="line">System.out.println(&quot;hello.java&quot;.endsWith(&quot;.txt&quot;));		&#x2F;&#x2F;false</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><p>boolean equals(Object anObject)方法（掌握）</p>
+<p>比较两个字符串是否相等</p>
+</li>
+<li><p>boolean equalsIgnoreCase(String anotherString)方法（掌握）</p>
+<p>判断两字符串是否相等，忽略大小写</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;ABc&quot;.equalsIgnoreCase(&quot;abC&quot;));		&#x2F;&#x2F;true</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><p>byte[] getBytes()方法（掌握）</p>
+<p>将字符串对象转换成字节数组</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">byte[] bytes &#x3D; &quot;abcd&quot;.getBytes();</span><br><span class="line">for (int i &#x3D; 0; i &lt; bytes.length; i++) &#123;</span><br><span class="line">	System.out.println(bytes[i]);		&#x2F;&#x2F;输出97 98 99 100</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li><p>int indexOf(String str)方法（掌握）</p>
+<p>获得某个子字符串在当前字符串中第一次出现处的索引（下标）</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;oraclejavaSQLjavaSQL&quot;.indexOf(&quot;java&quot;));		&#x2F;&#x2F;6</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li><p>boolean isEmpty()方法（掌握）</p>
+<p>判断某个字符串是否为空字符串</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String s &#x3D; &quot;&quot;;</span><br><span class="line">System.out.println(s.isEmpty());		&#x2F;&#x2F;true</span><br><span class="line">s &#x3D; &quot;heisenberg&quot;;</span><br><span class="line">System.out.println(s.isEmpty());		&#x2F;&#x2F;false</span><br><span class="line">s &#x3D; null;		&#x2F;&#x2F;空指针异常</span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li><p>int length()方法（掌握）</p>
+<p>判断数组长度是length属性，判断字符串长度是length()方法</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;heisenberg&quot;.length());		&#x2F;&#x2F;输出10</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li><p>int lastIndexOf(String str)方法（掌握）</p>
+<p>获得某个子字符串在当前字符串中最后一次出现处的索引（下标）</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;oraclejavaSQLjavaSQL&quot;.lastIndexOf(&quot;java&quot;));		&#x2F;&#x2F;13</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li><p>String replace(CharSequence target, CharSequence replacement)方法（掌握）</p>
+<p>替换</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String news &#x3D; &quot;http:&#x2F;&#x2F;realheisenberg.github.io&quot;.replace(&quot;p:&quot;,&quot;ps:&quot;);</span><br><span class="line">System.out.println(news);		&#x2F;&#x2F;输出https:&#x2F;&#x2F;realheisenberg.github.io</span><br><span class="line">String str1 &#x3D; &quot;haisanbarg&quot;.replace(&quot;a&quot;,&quot;e&quot;);</span><br><span class="line">System.out.println(str1);		&#x2F;&#x2F;输出heisenberg</span><br></pre></td></tr></table></figure>
+
+<ol start="13">
+<li><p>String[] split(String regex)方法（掌握）</p>
+<p>拆分字符串</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String[] ymd &#x3D; &quot;1998-01-22&quot;.split(&quot;-&quot;);		&#x2F;&#x2F;以&quot;-&quot;为分隔符进行拆分</span><br><span class="line">for (int i &#x3D; 0; i &lt; ymd.length; i++) &#123;</span><br><span class="line">	System.out.print(ymd[i]);		&#x2F;&#x2F;输出19980122</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="14">
+<li><p>boolean startsWith(String prefix)方法（掌握）</p>
+<p>判断某个字符串是否以某子字符串开始</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;realheisenberg&quot;.startsWith(&quot;real&quot;));		&#x2F;&#x2F;true</span><br></pre></td></tr></table></figure>
+
+<ol start="15">
+<li><p>String substring(int beginIndex)方法（掌握）</p>
+</li>
+<li><p>String substring(int beginIndex, int endIndex)方法（掌握）</p>
+<p>截取字符串（包括起始索引，不包括结束索引，左闭右开）</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;realheisenberg&quot;.substring(4));		&#x2F;&#x2F;heisenberg</span><br><span class="line">System.out.println(&quot;realheisenberg&quot;.substring(4,10));		&#x2F;&#x2F;heisen</span><br></pre></td></tr></table></figure>
+
+<ol start="17">
+<li><p>char[] toCharArray()方法（掌握）</p>
+<p>将字符串转换成char数组</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">char[] chars &#x3D; &quot;我是中国人&quot;.toCharArray();</span><br><span class="line">for (int i &#x3D; 0; i &lt; chars.length; i++) &#123;</span><br><span class="line">	System.out.println(chars[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="18">
+<li><p>String toLowerCase()方法（掌握）</p>
+</li>
+<li><p>String toUpperCase()方法（掌握）</p>
+<p>转换为小/大写</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;HEIsenBERG&quot;.toLowerCase());		&#x2F;&#x2F;输出heisenberg</span><br><span class="line">System.out.println(&quot;HEIsenBERG&quot;.toUpperCase());		&#x2F;&#x2F;输出HEISENBERG</span><br></pre></td></tr></table></figure>
+
+<ol start="20">
+<li><p>String trim()方法（掌握）</p>
+<p>去除字符串前后空白（中间的不去）</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;   hello  world   &quot;.trim());		&#x2F;&#x2F;输出hello  world</span><br></pre></td></tr></table></figure>
+
+<ol start="21">
+<li><p>String.valueOf()方法（掌握）</p>
+<p>静态方法，将非字符串数据转换为字符串数据</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">String s1 &#x3D; String.valueOf(true);		&#x2F;&#x2F;将布尔类型转换为字符串</span><br><span class="line">String s2 &#x3D; String.valueOf(3.14);		&#x2F;&#x2F;将double类型转换为String类型</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;class User&#123;&#125;</span><br><span class="line">class User&#123;</span><br><span class="line">	public String toString() &#123;</span><br><span class="line">		return &quot;hello&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">String s3 &#x3D; String.valueOf(new User());		&#x2F;&#x2F;调用对象toString()方法</span><br><span class="line">&#x2F;&#x2F;重写User的toString()方法前输出内存地址</span><br><span class="line">System.out.println(s3);		&#x2F;&#x2F;重写后输出hello</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>System.out.println()方法输出引用执行原理：调用String.valueOf()方法 -&gt; toString()方法。所以输出的任何内容都是字符串形式</li>
+</ul>
+<h3 id="StringBuffer：字符串缓冲区"><a href="#StringBuffer：字符串缓冲区" class="headerlink" title="StringBuffer：字符串缓冲区"></a>StringBuffer：字符串缓冲区</h3><ul>
+<li><p>使用“+”拼接创建新字符串会浪费方法区内存</p>
+</li>
+<li><p>StringBuffer()构造方法创建一个容量为16byte[] 数组（字符串缓冲对象）</p>
+</li>
+<li><p>append()方法：拼接字符串</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">StringBuffer s &#x3D; new StringBuffer();</span><br><span class="line">s.append(&quot;abc&quot;);</span><br><span class="line">s.append(&#39;d&#39;);</span><br><span class="line">s.append(123);</span><br><span class="line">s.append(3.14);</span><br><span class="line">System.out.println(s);		&#x2F;&#x2F;输出abcd1233.14</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>StringBuffer性能优化：创建时尽可能给定一个初始化容量（大一些），减少底层扩容次数</p>
+<p>StringBuffer(int capacity)方法</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">StringBuffer sb &#x3D; newStringBuffer(10);		&#x2F;&#x2F;指定初始化容量</span><br><span class="line">sb.append(&quot;real&quot;);</span><br><span class="line">sb.append(&quot;heisenberg&quot;);</span><br><span class="line">System.out.println(sb);		&#x2F;&#x2F;realheisenberg</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h4 id="StringBuilder"><a href="#StringBuilder" class="headerlink" title="StringBuilder"></a>StringBuilder</h4></li>
+<li><p>StringBuilder和StringBuffer的区别：</p>
+<p>StringBuffer中的方法都有synchronized关键字修饰，在多线程环境下是安全的</p>
+<p>StringBuilder中的方法都没有synchronized关键字修饰，是非线程安全的</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder sb &#x3D; new StringBuilder();</span><br><span class="line">sb.append(&quot;real&quot;);		&#x2F;&#x2F;与StringBuffer用法相同</span><br><span class="line">sb.append(&quot;heisenberg&quot;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>String为什么不可变：</p>
+<p>String类中有一个final修饰的byte[]数组，因为数组创建后长度不可变，且被final修饰的引用指向某对象后无法再指向其他对象</p>
+</li>
+<li><p>StringBuffer/StringBuilder为什么可变：</p>
+<p>StringBuffer/StringBuilder内部实际上是一个byte[]数组，这个数组没有被final修饰，初始容量为16，存满后调用数组拷贝方法System.arrayCopy()进行扩容</p>
+</li>
+</ul>
+<h3 id="包装类"><a href="#包装类" class="headerlink" title="包装类"></a>包装类</h3><ul>
+<li>java中为8种基本数据类型对应准备了8种包装类型，包装类型属于引用数据类型，父类是Object</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class IntegerTest01 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        MyInt mi &#x3D; new MyInt(20);</span><br><span class="line">        doSome(mi);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void doSome(Object obj)&#123;		&#x2F;&#x2F;无法传递基本数据类型</span><br><span class="line">        System.out.println(obj);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class MyInt &#123;		&#x2F;&#x2F;实际开发中不需要自己写</span><br><span class="line">    int i;</span><br><span class="line">    public MyInt(int i) &#123;</span><br><span class="line">        this.i &#x3D; i;</span><br><span class="line">    &#125;</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return String.valueOf(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>基本数据类型</th>
+<th>包装类型</th>
+<th>父类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>byte</td>
+<td>java.lang.Byte</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>short</td>
+<td>java.lang.Short</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>int</td>
+<td>java.lang.Integer</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>long</td>
+<td>java.lang.Long</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>float</td>
+<td>java.lang.Float</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>double</td>
+<td>java.lang.Double</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>java.lang.Boolean</td>
+<td>Object</td>
+</tr>
+<tr>
+<td>char</td>
+<td>java.lang.Character</td>
+<td>Object</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>Number是一个抽象类，无法实例化对象</p>
+<p>byte byteValue()方法：以byte形式返回指定数值<br>abstract double doubleValue()方法：以double形式返回指定数值<br>abstract float floatValue()方法：以float形式返回指定数值<br>abstract int intValue()方法：以int形式返回指定数值<br>abstract long longValue()方法：以long形式返回指定数值<br>short shortValue()方法：以short形式返回指定数值</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class IntegerTest02 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Integer i &#x3D; new Integer(20);		&#x2F;&#x2F;基本数据类型转换为引用数据类型（装箱）</span><br><span class="line">        float f &#x3D; i.floatValue();		&#x2F;&#x2F;引用数据类型转换为基本数据类型（拆箱）</span><br><span class="line">        System.out.println(f);		&#x2F;&#x2F;输出20.0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Integer类的构造方法：Integer(int)、Integer(String)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer x &#x3D; new Integer(100);		&#x2F;&#x2F;将100转换为Integer包装类（int -&gt; Integer）</span><br><span class="line">Integer y &#x3D; new Integer(&quot;123&quot;);		&#x2F;&#x2F;String -&gt; Integer</span><br><span class="line">Double d1 &#x3D; new Double(3.14);		&#x2F;&#x2F;其他类型同理</span><br><span class="line">Double d2 &#x3D; new Double(&quot;1.41&quot;);</span><br><span class="line"></span><br><span class="line">Integer x &#x3D; new Integer(&quot;字符串&quot;);		&#x2F;&#x2F;编译通过</span><br><span class="line">System.out.println(x);		&#x2F;&#x2F;运行报错：NumberFormatException，数字格式化异常</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Integer类的属性：MAX_VALUE（int型数据最大值）、MIN_VALUE（int型数据最小值）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(&quot;int类型数据最大值：&quot; + Integer.MAX_VALUE);		&#x2F;&#x2F;2147483647</span><br><span class="line">System.out.println(&quot;int类型数据最小值：&quot; + Integer.MIN_VALUE);		&#x2F;&#x2F;-2147483648</span><br><span class="line">System.out.println(&quot;byte类型数据最大值：&quot; + Byte.MAX_VALUE);		&#x2F;&#x2F;127</span><br><span class="line">System.out.println(&quot;byte类型数据最小值:&quot; + Byte.MIN_VALUE);		&#x2F;&#x2F;-128</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>JDK1.5之后支持自动装箱和自动拆箱</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Integer x &#x3D; 100;		&#x2F;&#x2F;自动装箱：int类型自动转换为Integer</span><br><span class="line">int y &#x3D; x;		&#x2F;&#x2F;自动拆箱：Integer自动转换为int</span><br><span class="line">System.out.println(x + 1);		&#x2F;&#x2F;输出101，&quot;+&quot;两边要求是基本数据类型数字，自动拆箱</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;&quot;&#x3D;&#x3D;&quot;不涉及自动拆箱，只有加减乘除会</span><br><span class="line">&#x2F;&#x2F;java中将[-128,127]的所有包装对象提前创建好，放在方法区的”整数型常量池“中，使用时不需要new</span><br><span class="line">&#x2F;&#x2F;Integer类加载时会初始化整数型常量池256个对象</span><br><span class="line">Integer a &#x3D; 127;</span><br><span class="line">Integer b &#x3D; 127;</span><br><span class="line">System.out.println(a &#x3D;&#x3D; b);        &#x2F;&#x2F;输出true，a和b中保存的内存地址相同</span><br><span class="line"></span><br><span class="line">Integer a &#x3D; 128;</span><br><span class="line">Integer b &#x3D; 128;</span><br><span class="line">System.out.println(a &#x3D;&#x3D; b);        &#x2F;&#x2F;输出false，创建了两个Integer对象</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>xx池：cache，是缓存机制，效率高</p>
+</li>
+<li><p>Integer类的方法：</p>
+</li>
+</ul>
+<ol>
+<li><p>static int parseInt(String s)方法（重点）</p>
+<p>静态方法，将String类型参数转换为int类型（将网页上输入的字符串内容转换为int类型存储在数据库中）</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int i &#x3D; Integer.parseInt(&quot;123&quot;);</span><br><span class="line">System.out.println(i + 100);		&#x2F;&#x2F;123 + 100 &#x3D; 223</span><br><span class="line"></span><br><span class="line">int j &#x3D; Integer.parseInt(&quot;abc&quot;);		&#x2F;&#x2F;数字格式化异常</span><br><span class="line"></span><br><span class="line">double d &#x3D; Double.parseDouble(&quot;3.14&quot;);</span><br><span class="line">System.out.println(d + 1);		&#x2F;&#x2F;4.140000000000001（精度问题）</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>static String toBinaryString(int i)方法：转换为二进制（了解）<br>static String toOctalString(int i)方法：转换为八进制<br>static String toHexString(int i)方法：转换为十六进制</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String s1 &#x3D; Integer.toBinaryString(3);		&#x2F;&#x2F;11</span><br><span class="line">String s2 &#x3D; Integer.toOctalString(9);		&#x2F;&#x2F;11</span><br><span class="line">String s3 &#x3D; Integer.toHexString(16);		&#x2F;&#x2F;10</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>static Integer valueOf(int i)方法：静态，int类型转换为Integer（了解）<br>static Integer valueOf(String s)方法：String类型转换为Integer<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Integer i1 &#x3D; Integer.valueOf(20);</span><br><span class="line">Integer i2 &#x3D; Integer.valueOf(&quot;80&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li>Object类中的toString()方法：调用toHexString()方法</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public String toString() &#123;</span><br><span class="line">	return getClass().getName() + &quot;@&quot; + Integer.toHexString(hashCode());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>String int Integer之间相互转换</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;String --&gt; int</span><br><span class="line">int i &#x3D; Integer.valueOf(20);</span><br><span class="line">System.out.println(i + 1);		&#x2F;&#x2F;21</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;int --&gt; String</span><br><span class="line">String s &#x3D; String.valueOf(50);</span><br><span class="line">System.out.println(s + 1);      &#x2F;&#x2F;501</span><br><span class="line">String s0 &#x3D; 50 + &quot;&quot;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;int --&gt; Integer</span><br><span class="line">Integer x &#x3D; 100;        &#x2F;&#x2F;自动装箱</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;Integer --&gt; int</span><br><span class="line">int y &#x3D; x;      &#x2F;&#x2F;自动拆箱</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;String --&gt; Integer</span><br><span class="line">Integer ii &#x3D; Integer.valueOf(&quot;128&quot;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;Integer --&gt; String</span><br><span class="line">String ss &#x3D; String.valueOf(ii);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="java中对日期的处理"><a href="#java中对日期的处理" class="headerlink" title="java中对日期的处理"></a>java中对日期的处理</h3><ul>
+<li>java.util.Date类的无参构造方法可以获得当前时间</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import java.util.Date;		&#x2F;&#x2F;需要import</span><br><span class="line"></span><br><span class="line">public class DateTest01 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Date now &#x3D; new Date();</span><br><span class="line">        System.out.println(now);		&#x2F;&#x2F;Fri Dec 11 20:20:06 CST 2020</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>java.text.SimpleDateFormat类可以格式化日期</p>
+</li>
+<li><p>SimpleDateFormat(String pattern)构造方法：</p>
+<p>yyyy：年（4位）    MM：月（2位）    dd：日</p>
+<p>HH：时    mm：分    ss：秒    SSS：毫秒（3位）</p>
+<p>（日期格式中，除了y M d H m s S字符外可以随意设置字符）</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import java.text.SimpleDateFormat;</span><br><span class="line">import java.util.Date;</span><br><span class="line"></span><br><span class="line">public class DateTest01 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Date now &#x3D; new Date();</span><br><span class="line">        SimpleDateFormat sdf &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss SSS&quot;);</span><br><span class="line">        &#x2F;*也可以写成(&quot;yyyy年MM月dd日 HH时mm分ss秒 SSS毫秒&quot;)、</span><br><span class="line">        (&quot;dd&#x2F;MM&#x2F;yyyy&quot;)... *&#x2F;</span><br><span class="line">        String nows &#x3D; sdf.format(now);		&#x2F;&#x2F;调用format(date)方法，转换为String</span><br><span class="line">        System.out.println(nows);		&#x2F;&#x2F;2020-12-11 21:22:11 080</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>日期字符串转换为Date类型：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) throws ParseException &#123;</span><br><span class="line">	String time &#x3D; &quot;2020-12-11 21:46:30 256&quot;;</span><br><span class="line">	&#x2F;&#x2F;SimpleDateFormat格式必须和字符串相同，否则报错：ParseException</span><br><span class="line">	SimpleDateFormat sdf1 &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss SSS&quot;);</span><br><span class="line">	Date dateTime &#x3D; sdf1.parse(time);</span><br><span class="line">	System.out.println(dateTime);		&#x2F;&#x2F;Fri Dec 11 21:46:30 CST 2020</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>System.currentTimeMillis()方法：获取自1970年1月1日00:00:00 000到当前时间的总毫秒数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">long nowTimeMillis &#x3D; System.currentTimeMillis();</span><br><span class="line">System.out.println(nowTimeMillis);</span><br><span class="line"></span><br><span class="line">long begin &#x3D; System.currentTimeMillis();		&#x2F;&#x2F;程序开始时间</span><br><span class="line">for (int i &#x3D; 0; i &lt; 1000; i++) &#123;</span><br><span class="line">	System.out.println(i);</span><br><span class="line">&#125;</span><br><span class="line">long end &#x3D; System.currentTimeMillis();		&#x2F;&#x2F;结束时间</span><br><span class="line">System.out.println(&quot;耗时：&quot; + (end - begin));		&#x2F;&#x2F;耗时16毫秒</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>总结System类的相关属性和方法：</p>
+<p>System.out    【out是System类的静态变量】<br>System.out.println()    【ptintln()方法属于PrintStream类】<br>System.gc()    【建议启动垃圾回收器】<br>System.currentTimeMillis()    【获取自1970.1.1到当前时间的毫秒数】<br>System.exit(0)    【退出JVM】</p>
+</li>
+<li><p>构造方法Date(long date)</p>
+<p>传递一个毫秒数，得到一个Date类型数据（1970-1-1 0:0:0 + date）</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Date time &#x3D; new Date(1);</span><br><span class="line">SimpleDateFormat sdf &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss SSS&quot;);</span><br><span class="line">String s1 &#x3D; sdf.format(time);</span><br><span class="line">System.out.println(s1);     &#x2F;&#x2F;1970-01-01 08:00:00 001（东8区）</span><br><span class="line">&#x2F;&#x2F;获取昨天此时</span><br><span class="line">Date time1 &#x3D; new Date(System.currentTimeMillis() - 24*60*60*1000);</span><br><span class="line">String s2 &#x3D; sdf.format(time1);</span><br><span class="line">System.out.println(s2);     &#x2F;&#x2F;2020-12-11 14:04:00 064</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>java.text.DecimalFormat类可以格式化数字</p>
+<p>#代表数字    ,代表千分位    .代表小数点    0表示不够时补0</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DecimalFormat df &#x3D; new DecimalFormat(&quot;###,###.##&quot;);	&#x2F;&#x2F;加入千分位，保留两位小数</span><br><span class="line">String s &#x3D; df.format(1234.56);</span><br><span class="line">System.out.println(s);		&#x2F;&#x2F;1,234.56</span><br><span class="line">String s0 &#x3D; df.format(1234.567);</span><br><span class="line">System.out.println(s0);		&#x2F;&#x2F;1,234.57</span><br><span class="line"></span><br><span class="line">DecimalFormat df1 &#x3D; new DecimalFormat(&quot;###,###.0000&quot;);	&#x2F;&#x2F;保留四位小数，不够补0</span><br><span class="line">String ss &#x3D; df1.format(1234.56);</span><br><span class="line">System.out.println(ss);		&#x2F;&#x2F;1,234.5600</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>java.math.BigDecimal类</p>
+<p>BigDecimal属于大数据，不属于基本数据类型，是SUN提供的一个类，用在财务软件中。精度比double高</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import java.math.BigDecimal;		&#x2F;&#x2F;导包</span><br><span class="line"></span><br><span class="line">public class BigDecimal01 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        BigDecimal x1 &#x3D; new BigDecimal(100);</span><br><span class="line">        BigDecimal x2 &#x3D; new BigDecimal(200);</span><br><span class="line">        BigDecimal x3 &#x3D; x1.add(x2);		&#x2F;&#x2F;引用数据类型，不能直接x1 + x2</span><br><span class="line">        System.out.println(x3);		&#x2F;&#x2F;输出300，toString()方法已重写</span><br><span class="line">        BigDecimal x4 &#x3D; x2.divide(x1);</span><br><span class="line">        System.out.println(x4);		&#x2F;&#x2F;2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="java-util-Random类"><a href="#java-util-Random类" class="headerlink" title="java.util.Random类"></a>java.util.Random类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Random r &#x3D; new Random();		&#x2F;&#x2F;创建随机数对象</span><br><span class="line">int x1 &#x3D; r.nextInt();		&#x2F;&#x2F;随机产生int类型取值范围内的数字</span><br><span class="line">System.out.println(x1);</span><br><span class="line"></span><br><span class="line">int x2 &#x3D; r.nextInt(21);		&#x2F;&#x2F;产生[0,20]之间的随机整数，不能产生21</span><br><span class="line">System.out.println(x2);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>产生五个不重复的[0,100]随机数，放在数组中</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Random r &#x3D; new Random();</span><br><span class="line">int[] array &#x3D; &#123;-1,-1,-1,-1,-1&#125;;		&#x2F;&#x2F;防止array[0]&#x3D;&#x3D;0</span><br><span class="line">array[0] &#x3D; r.nextInt(101);		&#x2F;&#x2F;</span><br><span class="line">for (int i &#x3D; 1; i &lt; array.length; i++) &#123;</span><br><span class="line">	array[i] &#x3D; r.nextInt(101);</span><br><span class="line">	while (true) &#123;</span><br><span class="line">		for (int j &#x3D; 0; j &lt; i; j++) &#123;</span><br><span class="line">			if (array[i] &#x3D;&#x3D; array[j])&#123;</span><br><span class="line">				array[i] &#x3D; r.nextInt(101);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;break;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h3><ul>
+<li>枚举是一种引用数据类型，编译后生成class文件，枚举中每一个值可以看做常量</li>
+<li>枚举类型语法：enum 枚举类型名{枚举值1, 枚举值2, …}</li>
+<li>结果只有两种时建议使用布尔类型；结果超过两种且可以一一列举的，建议使用枚举类型</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class EnumTest01 &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Return r &#x3D; divide(10,0);</span><br><span class="line">        System.out.println(r &#x3D;&#x3D; Return.SUCCESS? &quot;计算成功&quot;: &quot;计算失败&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Return divide(int a,int b)&#123;</span><br><span class="line">        try&#123;</span><br><span class="line">            int c &#x3D; a &#x2F; b;</span><br><span class="line">            return Return.SUCCESS;</span><br><span class="line">        &#125;catch(Exception e)&#123;		&#x2F;&#x2F;异常</span><br><span class="line">            return Return.FAIL;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public enum Return &#123;</span><br><span class="line">    SUCCESS, FAIL</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div><div class="post-copyright"><blockquote><p>Original author: Liu Sai</p><p>Original link: <a href="http://example.com/2020/12/06/Java常用类（String、StringBuffer、StringBuilder、日期、随机数、枚举）/">http://example.com/2020/12/06/Java常用类（String、StringBuffer、StringBuilder、日期、随机数、枚举）/</a></p><p>Copyright Notice: Please indicate the source of the reprint (must retain the author's signature and link)</p></blockquote></div><div class="tags"><a href="/tags/Java/">Java</a></div><div class="post-share"><div class="social-share"><span>Share:</span></div></div><div class="post-nav"><a href="/2020/12/10/Java%E5%BC%82%E5%B8%B8/" class="pre">Java异常</a><a href="/2020/11/23/JavaObject%E7%B1%BB%E3%80%81%E6%95%B0%E7%BB%84/" class="next">JavaObject类、数组</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">Contents</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E5%B8%B8%E7%94%A8%E7%B1%BB"><span class="toc-text">五. 常用类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#java-lang-String%E7%B1%BB"><span class="toc-text">java.lang.String类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="toc-text">常用构造方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-text">方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#StringBuffer%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-text">StringBuffer：字符串缓冲区</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#StringBuilder"><span class="toc-text">StringBuilder</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E7%B1%BB"><span class="toc-text">包装类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java%E4%B8%AD%E5%AF%B9%E6%97%A5%E6%9C%9F%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-text">java中对日期的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#java-util-Random%E7%B1%BB"><span class="toc-text">java.util.Random类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE"><span class="toc-text">枚举</span></a></li></ol></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/08/23/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8B%EF%BC%89/">社区项目（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/09/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8A%EF%BC%89/">社区项目（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/27/SpringMVC/">SpringMVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/20/Maven/">Maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/19/MyBatis/">MyBatis</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/05/Spring/">Spring</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/21/JavaWeb%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ACookie%E3%80%81Session%E3%80%81Filter%E3%80%81JSON%E3%80%81AJAX/">JavaWeb（三）：Cookie、Session、Filter、JSON、AJAX</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/JavaWeb%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AXML%E3%80%81Servlet%E3%80%81jsp%E3%80%81EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81JSTL%E6%A0%87%E7%AD%BE%E5%BA%93/">JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/">尚硅谷书城项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/04/13/JavaWeb%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHTML%E3%80%81CSS%E3%80%81JavaScript%E3%80%81jQuery/">JavaWeb（一）：HTML、CSS、JavaScript、jQuery</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> Tags</i></div><div class="tagcloud"><a href="/tags/JDBC/" style="font-size: 15px;">JDBC</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Maven/" style="font-size: 15px;">Maven</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/JavaWeb/" style="font-size: 15px;">JavaWeb</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/SpringMVC/" style="font-size: 15px;">SpringMVC</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/tags/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">尚硅谷书城项目</a> <a href="/tags/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">社区项目</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> Archive</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> Blogroll</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Site Map</a> |  <a href="/atom.xml">Subscribe to this site</a> |  <a href="/about/">Contact the blogger</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">Liu Sai.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a target="_blank" rel="noopener" href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.5"></script><div id="fullscreen-img" class="hide"><span class="close"></span></div><script type="text/javascript" src="/js/imgview.js?v=2.0.5" async></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.5" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>

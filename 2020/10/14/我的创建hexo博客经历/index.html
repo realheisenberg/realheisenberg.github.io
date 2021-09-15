@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.5"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.5"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><title>我的创建hexo博客经历 | realheisenberg</title><meta name="generator" content="Hexo 5.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">我的创建hexo博客经历</h1><a id="logo" href="/.">realheisenberg</a><p class="description">liusai201@mails.ucas.ac.cn</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">我的创建hexo博客经历</h1><div class="post-meta"><a href="/2020/10/14/%E6%88%91%E7%9A%84%E5%88%9B%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E7%BB%8F%E5%8E%86/#comments" class="comment-count"></a><p><span class="date">Oct 14, 2020</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>Hits</i></i></span></p></div><div class="post-content"><p>周一看到一个b站视频讲如何用hexo在github上创建博客，看完感觉很酷炫，于是自己动手尝试。</p>
+<h2 id="基本安装"><a href="#基本安装" class="headerlink" title="基本安装"></a>基本安装</h2><p>先从网上下载node.js安装，然后打开cmd，查看node和npm安装结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p>安装淘宝镜像源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g cnpm --registry&#x3D;https:&#x2F;&#x2F;registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>全局安装hexo：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>创建博客文件夹：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir blog</span><br></pre></td></tr></table></figure>
+
+
+
+<p>一开始安装还是顺风顺水，直到执行hexo init时报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#39;git&#39;不是内部或外部命令，也不是可运行的程序或批处理文件。</span><br><span class="line"></span><br><span class="line">WARN git clone failed. Copying data instead</span><br><span class="line"></span><br><span class="line">FATAL &#123; </span><br><span class="line"></span><br><span class="line">​    err: [Error: ENOENT: no such file or directory,  scandie &#39;...&#39;]</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/10/14/%E6%88%91%E7%9A%84%E5%88%9B%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E7%BB%8F%E5%8E%86/1.png" class title="windows报错">
+
+
+
+<p>由于 FATAL 的标红过于显眼（其实还是自己菜），找了一堆“解决方案”：</p>
+<p>是不是没配环境变量啊，双斜线是不是出错了啊，是不是没有用管理员身份打开啊。。。</p>
+<p>博主一一尝试网上教程均无果。我甚至以为是系统的问题，于是又装了一个linux的虚拟机，但是在虚拟机上一样有这个问题。（不知道是不是我安装的ubuntu版本的问题，有好多命令还要现装才能用。。。）</p>
+<img src="/2020/10/14/%E6%88%91%E7%9A%84%E5%88%9B%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E7%BB%8F%E5%8E%86/3.png" class title="linux报错">
+
+<p>下图为官网的解决方案：</p>
+<img src="/2020/10/14/%E6%88%91%E7%9A%84%E5%88%9B%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E7%BB%8F%E5%8E%86/2.png" class title="官网解决方法">
+
+<p>后来发现是因为我没有安装 git 。。。下载安装后再执行 hexo init 命令就成功了。</p>
+<p>启动 hexo：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -s</span><br></pre></td></tr></table></figure>
+
+<p>会提示你到 localhost:4000 端口查看，这时博客中有一篇 helloworld，创建一篇新文章：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -n</span><br></pre></td></tr></table></figure>
+
+<p>之后我就没有再对这篇文章编辑了，等后续用编辑器再写。</p>
+<h2 id="github设置"><a href="#github设置" class="headerlink" title="github设置"></a>github设置</h2><p>在 github 上设置：新建一个 Repositories，仓库名必须是“你的 github 昵称”.github.io，默认为 public。在命令行窗口输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>修改 _config.yml 文件，文件最后几行改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: git的ssh链接</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p>教程上到现在就可以上传到 github 了，但是我在执行 hexo -d 时总是失败:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+
+<p>解决方法：</p>
+<p>命令行输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C 你的邮箱地址.com</span><br></pre></td></tr></table></figure>
+
+<p>选择公钥保存地址，在 .ssh/id_rsa 文件中就生成了公钥 。打开 id_rsa.pub 文件复制公钥，打开 github 设置，在ssh and GPG keys 中新增一个ssh key，把复制的公钥保存（title可以为空）。</p>
+<p>验证ssh key：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p> 出现下面的语句说明你的 ssh key 已经配置好了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+
+<p>初始化本地 git 仓库， 设置 git 的 user name 和 email：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;你的用户名&quot;</span><br><span class="line">git config --global user.email &quot;你的邮箱.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>接下来再进行hexo d操作就成功了。</p>
+<p>github登录界面：</p>
+<img src="/2020/10/14/%E6%88%91%E7%9A%84%E5%88%9B%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2%E7%BB%8F%E5%8E%86/4.png" class title="github登录界面">
+
+
+
+<h2 id="图片显示问题"><a href="#图片显示问题" class="headerlink" title="图片显示问题"></a>图片显示问题</h2><p>发完博客才发现还有一点小问题，就是图片无法正常显示，下面是我的解决办法：</p>
+<ol>
+<li><p>更改文件 _config.yml 中 post_asset_folder:false 改为 true 。 这样在建立文件时，hexo 会自动建立一个与文章同名的文件夹，这样就可以把与该文章相关的所有资源（图片）都放到那个文件夹里方便后面引用。 </p>
+</li>
+<li><p>git bash安装插件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https:&#x2F;&#x2F;github.com&#x2F;7ym0n&#x2F;hexo-asset-image --save </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>插入图片时用这种方式： </p>
+<p> 其中 test.jpg 就是你要引用的图片， 后面的 This is an test image 是图片描述，可以自己修改。</p>
+</li>
+</ol>
+<p>博主这样改完之后的确可以正常插入图片了，但是在部署到 github 上时又出问题了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR Deployer not found: git</span><br></pre></td></tr></table></figure>
+
+<p>网上的回答都是让安装 hexo-deployer-git，但是我已经安装过了啊。。。但是确实，再执行语句之后问题被解决了，看来这条命令应该在最后用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以正常使用了！</p>
+<p>附error：spawn failed错误的解决方法：</p>
+<ol>
+<li><p>删除<code>.deploy_git</code>文件夹;</p>
+</li>
+<li><p>输入<code>git config --global core.autocrlf false</code></p>
+</li>
+<li><p>然后，依次执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ol>
+<p>感谢b站“CodeSheep”up主以及 <a target="_blank" rel="noopener" href="https://blog.csdn.net/Greenovia/article/details/60576985">https://blog.csdn.net/Greenovia/article/details/60576985</a> 、 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/961f4ee0ed1f">https://www.jianshu.com/p/961f4ee0ed1f</a> 、 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/Jesee/p/11234387.html">https://www.cnblogs.com/Jesee/p/11234387.html</a> 三篇博客作者</p>
+</div><div class="post-copyright"><blockquote><p>Original author: Liu Sai</p><p>Original link: <a href="http://example.com/2020/10/14/我的创建hexo博客经历/">http://example.com/2020/10/14/我的创建hexo博客经历/</a></p><p>Copyright Notice: Please indicate the source of the reprint (must retain the author's signature and link)</p></blockquote></div><div class="tags"><a href="/tags/hexo/">hexo</a></div><div class="post-share"><div class="social-share"><span>Share:</span></div></div><div class="post-nav"><a href="/2020/10/16/hexo%E5%8D%9A%E5%AE%A2%E7%95%8C%E9%9D%A2%E7%BE%8E%E5%8C%96/" class="pre">hexo博客界面美化</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">Contents</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85"><span class="toc-text">基本安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github%E8%AE%BE%E7%BD%AE"><span class="toc-text">github设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA%E9%97%AE%E9%A2%98"><span class="toc-text">图片显示问题</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/08/23/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8B%EF%BC%89/">社区项目（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/09/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8A%EF%BC%89/">社区项目（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/27/SpringMVC/">SpringMVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/20/Maven/">Maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/19/MyBatis/">MyBatis</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/05/Spring/">Spring</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/21/JavaWeb%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ACookie%E3%80%81Session%E3%80%81Filter%E3%80%81JSON%E3%80%81AJAX/">JavaWeb（三）：Cookie、Session、Filter、JSON、AJAX</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/JavaWeb%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AXML%E3%80%81Servlet%E3%80%81jsp%E3%80%81EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81JSTL%E6%A0%87%E7%AD%BE%E5%BA%93/">JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/">尚硅谷书城项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/04/13/JavaWeb%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHTML%E3%80%81CSS%E3%80%81JavaScript%E3%80%81jQuery/">JavaWeb（一）：HTML、CSS、JavaScript、jQuery</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> Tags</i></div><div class="tagcloud"><a href="/tags/JDBC/" style="font-size: 15px;">JDBC</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Maven/" style="font-size: 15px;">Maven</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/JavaWeb/" style="font-size: 15px;">JavaWeb</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/SpringMVC/" style="font-size: 15px;">SpringMVC</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/tags/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">尚硅谷书城项目</a> <a href="/tags/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">社区项目</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> Archive</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> Blogroll</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Site Map</a> |  <a href="/atom.xml">Subscribe to this site</a> |  <a href="/about/">Contact the blogger</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">Liu Sai.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a target="_blank" rel="noopener" href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.5"></script><div id="fullscreen-img" class="hide"><span class="close"></span></div><script type="text/javascript" src="/js/imgview.js?v=2.0.5" async></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.5" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>

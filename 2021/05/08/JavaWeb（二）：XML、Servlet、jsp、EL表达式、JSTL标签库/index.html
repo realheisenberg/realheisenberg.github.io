@@ -1,0 +1,1071 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.5"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.5"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><title>JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库 | realheisenberg</title><meta name="generator" content="Hexo 5.2.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库</h1><a id="logo" href="/.">realheisenberg</a><p class="description">liusai201@mails.ucas.ac.cn</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库</h1><div class="post-meta"><a href="/2021/05/08/JavaWeb%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AXML%E3%80%81Servlet%E3%80%81jsp%E3%80%81EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81JSTL%E6%A0%87%E7%AD%BE%E5%BA%93/#comments" class="comment-count"></a><p><span class="date">May 08, 2021</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>Hits</i></i></span></p></div><div class="post-content"><h2 id="JavaWeb"><a href="#JavaWeb" class="headerlink" title="JavaWeb"></a>JavaWeb</h2><h3 id="5-XML"><a href="#5-XML" class="headerlink" title="5.XML"></a>5.XML</h3><p>XML是可扩展的标记性语言</p>
+<p>xml的主要作用：</p>
+<ol>
+<li>用来保存数据，且这些数据具有自我描述性</li>
+<li>可以作为项目或模块的配置文件</li>
+<li>可以作为网络传输数据的格式（现在以JSON为主）</li>
+</ol>
+<p>xml注释与HTML注释相同</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>     <span class="comment">&lt;!-- xml文件声明，version是版本，encoding是编码 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">books</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">book</span> <span class="attr">sn</span>=<span class="string">&quot;SN123456789&quot;</span>&gt;</span>     <span class="comment">&lt;!-- sn表示图书序列号 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>查拉图斯特拉如是说<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">author</span>&gt;</span>尼采<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">price</span>&gt;</span>35<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">book</span> <span class="attr">sn</span>=<span class="string">&quot;SN987654321&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>Thinking In Java<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">author</span>&gt;</span>Linus<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">price</span>&gt;</span>75<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">books</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-XML元素"><a href="#1-XML元素" class="headerlink" title="1. XML元素"></a>1. XML元素</h4><p>xml元素：从开始标签（包括）到结束标签（包括）的部分，元素可以包含其他元素和文本</p>
+<p>xml命名规则：</p>
+<ol>
+<li><p>名称不能以数字或标点符号开始</p>
+</li>
+<li><p>名称不能以字符“xml”或“XML”等开始（这么写也不报错）</p>
+</li>
+<li><p>名称不能包含空格</p>
+</li>
+<li><p>xml中的元素可以分为双标签和单标签：</p>
+<p>双标签：&lt;标签名 属性=”值” 属性=”值”…&gt;文本数据或子标签&lt;/标签名&gt;</p>
+<p>单标签：&lt;标签名 属性=”值” 属性=”值”… /&gt;</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">name</span>&gt;</span>Java编程思想<span class="tag">&lt;/<span class="name">name</span>&gt;</span>		<span class="comment">&lt;!-- 双标签 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">book</span> <span class="attr">sn</span>=<span class="string">&quot;SN123456&quot;</span> <span class="attr">name</span>=<span class="string">&quot;葵花宝典&quot;</span> /&gt;</span>		<span class="comment">&lt;!-- 单标签 --&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>xml属性必须用引号括起来，否则报错</p>
+</li>
+<li><p>xml标签对大小写敏感</p>
+</li>
+<li><p>xml文档必须有根元素</p>
+<p>根元素：没有父标签的元素，顶级元素，根元素必须唯一</p>
+</li>
+<li><p>特殊字符：</p>
+<p>&lt;：<code>&amp;lt;</code>    &gt;：<code>&amp;gt;</code></p>
+</li>
+<li><p>文本区域（CDATA区）：</p>
+<p>CDATA区中的文本只是纯文本，不会解析</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;![CDATA[</span><br><span class="line">	&lt;&lt;&lt;&lt;纯文本&gt;&gt;&gt;&gt;</span><br><span class="line">]]&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="2-XML解析技术：Dom4j"><a href="#2-XML解析技术：Dom4j" class="headerlink" title="2. XML解析技术：Dom4j"></a>2. XML解析技术：Dom4j</h4><p>获取document对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dom4jTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    	<span class="comment">//第一步：创建SAXReader对象，读取xml文件获取Document对象</span></span><br><span class="line">        SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        <span class="comment">//在Junit测试中，相对路径是从模块名开始算</span></span><br><span class="line">        Document document = reader.read(<span class="string">&quot;src/books.xml&quot;</span>);</span><br><span class="line">        <span class="comment">//第二步：通过Document对象，获取xml根元素对象</span></span><br><span class="line">        Element root = document.getRootElement();</span><br><span class="line">        <span class="comment">//Element.asXML()方法：将当前元素转化为String对象</span></span><br><span class="line">        <span class="comment">//System.out.println(root.asXML());</span></span><br><span class="line">        <span class="comment">//第三步：通过根元素对象获取所有book标签对象</span></span><br><span class="line">        <span class="comment">//Element.elements(&quot;标签名&quot;)方法：获取当前元素指定子元素的集合</span></span><br><span class="line">        List&lt;Element&gt; books = root.elements(<span class="string">&quot;book&quot;</span>);</span><br><span class="line">        <span class="comment">//第四步：遍历book对象，获取book内的每个元素</span></span><br><span class="line">        <span class="keyword">for</span> (Element book : books)&#123;</span><br><span class="line">            Element nameElement = book.element(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">            <span class="comment">//getText()方法：获取标签中的文本信息</span></span><br><span class="line">            String nameText = nameElement.getText();</span><br><span class="line">            <span class="comment">//Element.elementText()方法：直接获取标签文本内容</span></span><br><span class="line">            String priceText = book.elementText(<span class="string">&quot;price&quot;</span>);</span><br><span class="line">            String authorText = book.elementText(<span class="string">&quot;author&quot;</span>);</span><br><span class="line">            String snValue = book.elementText(<span class="string">&quot;sn&quot;</span>);</span><br><span class="line">            System.out.println(<span class="keyword">new</span> Book(snValue, nameText, </span><br><span class="line">            					Double.parseDouble(priceText), authorText));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String sn;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Double price;</span><br><span class="line">    <span class="keyword">private</span> String author;</span><br><span class="line">    <span class="comment">//有参、无参构造，setter、getter，toString</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-Tomcat"><a href="#6-Tomcat" class="headerlink" title="6. Tomcat"></a>6. Tomcat</h3><p>JavaWeb：所有通过Java语言通过浏览器访问的程序的总称，JavaWeb基于请求和响应来开发</p>
+<p>请求（Request）：客户端给服务器发送数据</p>
+<p>响应（Response）：服务器给客户端回传数据</p>
+<p>请求和响应是成对出现的</p>
+<p>web资源的按实现的技术和呈现的效果不同，分为动态资源和静态资源：</p>
+<p>​    静态资源：html、css、js、mp4视频、jpg图片等</p>
+<p>​    动态资源：jsp页面、Servlet程序等</p>
+<p>Tomcat：由Apache组织提供的一种Web服务器，提供对jsp和Servlet的支持，免费、轻量级JavaWeb容器（服务器）</p>
+<p>Servlet程序2.5版本使用最多（xml配置），3.0版本开始使用注解版本Servlet</p>
+<ul>
+<li><p>Tomcat目录：</p>
+<p>bin：存放Tomcat服务器的可执行程序</p>
+<p>conf：存放Tomcat服务器的配置文件</p>
+<p>lib：存放Tomcat服务器的jar包</p>
+<p>logs：存放Tomcat服务器运行时输出的日志信息</p>
+<p>temp：存放Tomcat服务器运行时产生的临时数据</p>
+<p>webapps：存放部署的Web工程，一个目录就是一个工程</p>
+<p>work：Tomcat工作目录，存放Tomcat运行时jsp翻译为Servlet的源码，和Session钝化的目录</p>
+</li>
+<li><p>启动Tomcat服务器：双击bin目录下的startup.bat文件</p>
+<p>或者在命令行cd到Tomcat的bin目录下，输入命令：catalina run</p>
+</li>
+<li><p>测试Tomcat服务器启动成功的三种方式：</p>
+<ol>
+<li>打开<a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a></li>
+<li><a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a></li>
+<li>http://真实ip:8080</li>
+</ol>
+</li>
+<li><p>启动失败的情况：双击后小黑窗口一闪而过，需要配置JAVA_HOME环境变量：</p>
+<p>变量值为jdk安装目录（本机为E:\JDK），不要带上后面的目录如bin</p>
+</li>
+<li><p>Tomcat的停止：</p>
+<ol>
+<li>直接关闭Tomcat服务器窗口</li>
+<li>把Tomcat服务器窗口置为当前窗口，Ctrl+c</li>
+<li>双击bin目录下的shutdown.bat文件</li>
+</ol>
+</li>
+<li><p>修改Tomcat默认端口号：</p>
+<p>找到Tomcat目录下的conf/server.xml配置文件，找到Connector标签，修改port属性为需要的端口号，端口号范围：1~65535</p>
+<p>修改完成后必须重启tomcat服务器才能生效</p>
+<p>MySQL默认端口号：3306；Tomcat默认端口号：8080</p>
+<p>百度：<a href="http://www.baidu.com:80，HTTP协议默认端口号是80">http://www.baidu.com:80，HTTP协议默认端口号是80</a></p>
+</li>
+<li><p>Tomcat部署web工程的两种方法：</p>
+<ol>
+<li><p>在webapps目录下创建一个book工程，把书城第一阶段内容拷贝进来，在浏览器输入<a href="http://ip:port/工程名/目录/文件名，即可访问Tomcat下的web工程">http://ip:port/工程名/目录/文件名，即可访问Tomcat下的web工程</a></p>
+</li>
+<li><p>在conf\Catalina\localhost目录下创建配置文件abc.xml（内容如下），访问<a href="http://ip:port/abc/，就表示访问E:\book目录">http://ip:port/abc/，就表示访问E:\book目录</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Context：表示一个工程上下文</span></span><br><span class="line"><span class="comment">	path：表示工程的访问路径:/abc</span></span><br><span class="line"><span class="comment">	docBase：表示工程目录 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">path</span>=<span class="string">&quot;/abc&quot;</span> <span class="attr">docBase</span>=<span class="string">&quot;E:\book&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>拖动html文件到浏览器和在浏览器中输入<a href="http://ip:port/工程名/资源名访问的区别：">http://ip:port/工程名/资源名访问的区别：</a></p>
+<p>拖动文件显示的地址：file:///E:/book/index.html，使用的是file://协议。</p>
+<p>file协议表示浏览器直接读取file协议后面的路径，展示在浏览器上</p>
+<p>使用地址访问时，使用的是http协议，需要客户端（浏览器）发送请求给服务器（Tomcat），服务器收到请求后，读取要访问的资源文件，回传给客户端页面（index.html）。客户端得到页面内容，解析展示在浏览器上</p>
+</li>
+<li><p>ROOT工程的访问以及index.html页面的访问</p>
+<p>访问<a href="http://ip:port（没有工程名时），默认访问ROOT工程">http://ip:port（没有工程名时），默认访问ROOT工程</a></p>
+<p>访问<a href="http://ip:port/工程名/（没有资源名时），默认访问该工程的index.html页面">http://ip:port/工程名/（没有资源名时），默认访问该工程的index.html页面</a></p>
+</li>
+<li><p>IDEA整合Tomcat服务器</p>
+<p>菜单：File | Settings | Build, Execution, Deployment | Application Servers</p>
+<p>选择Tomcat Server，选择Tomcat安装目录（E:\Tomcat\apache-tomcat-8.0.50）</p>
+</li>
+<li><p>IDEA中创建动态工程：</p>
+<p>先创建普通Java的module，右键这个module，选择Add Frameworks Support，选中Web Application与右侧的Create web.xml选项，点击ok</p>
+</li>
+<li><p>web工程目录介绍：</p>
+<p>src：存放编写的Java代码</p>
+<p>web：存放web工程的资源文件，如html页面、css文件、js文件等</p>
+<p>WEB-INF：受服务器保护的目录，浏览器无法直接访问到此目录的内容</p>
+<p>web.xml是整个动态web工程的配置部署描述文件，可以配置web工程组件如：Servlet程序、Filter过滤器、Listener监听器、Session超时等</p>
+<p>lib：一般习惯在WEB-INF下创建一个lib文件夹，用来存放第三方jar包（IDEA需要自行配置导入）</p>
+</li>
+<li><p>添加jar包的另一种方式：</p>
+<p>先把需要的jar包拷贝到lib目录下，点击File | Project Structure，选择Libraries，点击+号，选择Java，选择需要的类库，选择用在哪个模块。点击Artifacts选项，点击fix添加到打包部署中。</p>
+<p>Artifacts为空的解决方法：在Artifacts页面点击加号，选择Web Application:Exploded | From Modules</p>
+</li>
+<li><p>新版（20版）IDEA添加Tomcat实例：</p>
+<p>Run | Edit Configurations，点击+号，选择Tomcat Server | Local</p>
+<p>在Server中对Tomcat实例重命名（一般修改为模块名）</p>
+<p>在Deployment中对路径重命名（一般修改为模块名）</p>
+</li>
+<li><p>配置资源热部署：</p>
+<p>将Server选项卡On frame deactivation改为Update classes and resources</p>
+</li>
+</ul>
+<h3 id="7-Servlet"><a href="#7-Servlet" class="headerlink" title="7. Servlet"></a>7. Servlet</h3><ul>
+<li><p>Servlet是JavaEE规范（接口）之一</p>
+<p>Servlet是JavaWeb三大组件之一。三大组件：Servlet程序、Filter过滤器、Listener监听器</p>
+<p>Servlet是运行在服务器上的一个Java程序，可以接收客户端发送的请求，并响应数据给客户端</p>
+</li>
+</ul>
+<h4 id="1-手动实现Servlet程序（实现Servlet接口）"><a href="#1-手动实现Servlet程序（实现Servlet接口）" class="headerlink" title="1. 手动实现Servlet程序（实现Servlet接口）"></a>1. 手动实现Servlet程序（实现Servlet接口）</h4><ol>
+<li>编写一个类实现Servlet接口（有可能找不到Servlet-api的jar包，去tomcat的lib文件夹里找，添加进来）</li>
+<li>实现service方法，处理请求并响应数据</li>
+<li>到web.xml中配置Servlet程序的访问地址</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在src/servlet下创建一个测试类HelloServlet：</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloServlet</span> <span class="keyword">implements</span> <span class="title">Servlet</span></span>&#123;		<span class="comment">//实现Servlet接口</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;		<span class="comment">//实现service方法</span></span><br><span class="line">        System.out.println(<span class="string">&quot;Hello Servlet 被访问了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 在web.xml中添加配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- service标签：给Tomcat配置Servlet程序 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- service-name标签：给Servlet程序起别名（一般是类名） --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- servlet-class标签：Servlet程序的全类名（从src下开始） --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>servlet.HelloServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- servlet-mapping标签：配置Servlet程序访问地址 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- servlet-name标签：告诉服务器当前配置的地址给哪个Servlet程序使用 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- url-pattern标签：配置访问地址</span></span><br><span class="line"><span class="comment"> 			/		表示地址为http://ip:port/工程路径</span></span><br><span class="line"><span class="comment">			/hello	表示地址为http://ip:port/工程路径/hello</span></span><br><span class="line"><span class="comment">			注意：必须以斜杠/开头</span></span><br><span class="line"><span class="comment">		--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/hello<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>URL地址到Servlet程序的访问：</p>
+<p>url：<a target="_blank" rel="noopener" href="http://localhost:8080/servlet/hello">http://localhost:8080/servlet/hello</a></p>
+<p>localhost：服务器ip，通过ip定位服务器（服务器ip唯一）</p>
+<p>:8080：服务器端口号，通过端口号定位到监听8080端口的Tomcat服务器</p>
+<p>/servlet：工程路径，确定访问哪个工程</p>
+<p>/hello：资源路径，在web.xml配置文件中找到servlet程序地址，访问该程序</p>
+</li>
+<li><h5 id="Servlet生命周期"><a href="#Servlet生命周期" class="headerlink" title="Servlet生命周期"></a>Servlet生命周期</h5><ol>
+<li>执行Servlet构造器方法</li>
+<li>执行init初始化方法（第1、2步在创建Servlet程序时会调用，只执行一次）</li>
+<li>执行service方法（每一次访问都会执行）</li>
+<li>执行destroy销毁方法（在web工程停止时调用）</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloServlet</span> <span class="keyword">implements</span> <span class="title">Servlet</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HelloServlet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;1. 构造器方法执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;2. init方法执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;3. service方法执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;4. destroy方法执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>GET请求和POST请求的分发处理</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 在web文件夹下新建a.html文件，写入以下代码 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://localhost:8080/servlet/hello&quot;</span> <span class="attr">method</span>=<span class="string">&quot;get&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//service方法用来处理请求和响应</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    <span class="comment">//HttpServletRequest是servletRequest的子类，类型转换</span></span><br><span class="line">	HttpServletRequest hsr = (HttpServletRequest) servletRequest;</span><br><span class="line">    <span class="comment">//String.getMethod()方法获取请求的方式</span></span><br><span class="line">	String method = hsr.getMethod();</span><br><span class="line">	<span class="comment">//System.out.println(method);		//输出GET</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="string">&quot;GET&quot;</span>.equals(method))&#123;</span><br><span class="line">		doGet();</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;POST&quot;</span>.equals(method))&#123;</span><br><span class="line">		doPost();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">()</span></span>&#123;		<span class="comment">//做get请求的操作</span></span><br><span class="line">	System.out.println(<span class="string">&quot;get请求&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">()</span></span>&#123;		<span class="comment">//做post请求的操作</span></span><br><span class="line">	System.out.println(<span class="string">&quot;post请求&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-通过继承HttpServlet实现Servlet程序"><a href="#2-通过继承HttpServlet实现Servlet程序" class="headerlink" title="2. 通过继承HttpServlet实现Servlet程序"></a>2. 通过继承HttpServlet实现Servlet程序</h4><p>在实际开发中，一般使用继承HttpServlet类的方法实现Serclet程序</p>
+<ol>
+<li>编写一个类继承HttpServlet类</li>
+<li>根据业务需要重写deGet或doPost方法</li>
+<li>在web.xml中配置Servlet程序的访问地址</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloServlet2</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;HelloServlet2的doGet方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;HelloServlet2的doPost方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//xml中的配置方法与上例相同</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用IDEA创建Servlet程序</p>
+<p>右键包名-&gt;New-&gt;Create New Servlet，配置Servlet-name、全类名，取消勾选Java EE 6选项</p>
+</li>
+</ul>
+<h4 id="Servlet类的继承体系"><a href="#Servlet类的继承体系" class="headerlink" title="Servlet类的继承体系"></a>Servlet类的继承体系</h4><p>​    Servlet接口：负责定义Servlet程序的访问规范</p>
+<p>​    GenericServlet类：实现Servlet接口，有一个ServiceConfig类的引用</p>
+<p>​    HttpServlet类：继承GenericServlet类，实现service()方法，实现请求的分发处理（doGet()和doPost()方法负责抛异常，说不支持GET/POST请求）</p>
+<p>​    自定义的Servlet程序：继承HttpServlet类，根据业务逻辑需要重写doGet()和doPost()方法</p>
+<h4 id="ServletConfig类"><a href="#ServletConfig类" class="headerlink" title="ServletConfig类"></a>ServletConfig类</h4><p>ServletConfig类是Servlet程序的配置信息类</p>
+<p>Servlet程序的ServletConfig对象由Tomcat负责创建</p>
+<p>Servlet程序默认第一次访问时创建；每个Servlet程序创建时，就创建一个对应的ServletConfig对象</p>
+<h5 id="ServletConfig类的三大作用："><a href="#ServletConfig类的三大作用：" class="headerlink" title="ServletConfig类的三大作用："></a>ServletConfig类的三大作用：</h5><ol>
+<li>可以获取Servlet程序的别名servlet-name的值</li>
+<li>可以获取初始化参数init-param</li>
+<li>可以获取ServletContext对象</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloServlet</span> <span class="keyword">implements</span> <span class="title">Servlet</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig servletConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    	<span class="comment">//获取Servlet程序别名servlet-name的值</span></span><br><span class="line">        System.out.println(<span class="string">&quot;HelloServlet程序别名：&quot;</span> + servletConfig.getServletName());		<span class="comment">//输出HelloServlet</span></span><br><span class="line">        <span class="comment">//获取初始化参数init-param</span></span><br><span class="line">        System.out.println(<span class="string">&quot;初始化参数username的值是：&quot;</span> + servletConfig.getInitParameter(<span class="string">&quot;username&quot;</span>));		<span class="comment">//输出root</span></span><br><span class="line">        System.out.println(<span class="string">&quot;初始化参数url的值是：&quot;</span> + servletConfig.getInitParameter(<span class="string">&quot;url&quot;</span>));</span><br><span class="line">        <span class="comment">//获取ServletContext对象</span></span><br><span class="line">        System.out.println(servletConfig.getServletContext());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- web.xml中的配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>servlet.HelloServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    	<span class="comment">&lt;!-- init-param是初始化参数 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>username<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span>	<span class="comment">&lt;!-- 参数名 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>root<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span>	<span class="comment">&lt;!-- 参数值 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>url<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>jdbc:mysql://localhost:3306/test<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重写init方法时必须调用父类的init(ServletConfig)操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">	<span class="keyword">super</span>.init(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ServletContext接口"><a href="#ServletContext接口" class="headerlink" title="ServletContext接口"></a>ServletContext接口</h4><ol>
+<li>ServletContext接口是Servlet上下文对象</li>
+<li>一个web工程只有一个ServletContext对象实例</li>
+<li>ServletContext对象是一个域对象（域对象是可以像Map一样存取数据的对象，这里的域指的是存取数据的操作范围，是整个web工程）</li>
+<li>ServletContext对象在web工程部署启动时创建，在web工程停止时销毁</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>存数据</th>
+<th>取数据</th>
+<th>删除数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Map</td>
+<td>put()</td>
+<td>get()</td>
+<td>remove()</td>
+</tr>
+<tr>
+<td>域对象</td>
+<td>setAttribute()</td>
+<td>getAttribute()</td>
+<td>CremoveAttribute()</td>
+</tr>
+</tbody></table>
+<p>ServletContext类的四个作用：</p>
+<ol>
+<li>获取web.xml中配置的上下文参数context-param</li>
+<li>获取当前工程路径，格式：/工程路径</li>
+<li>获取工程部署后在服务器硬盘上的绝对路径</li>
+<li>像Map一样存取数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletContext</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="comment">//必须写在doGet()方法中，浏览器输入url访问是发送get请求</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//获取web.xml中配置的上下文参数context-param</span></span><br><span class="line">        javax.servlet.ServletContext context = getServletConfig().getServletContext();</span><br><span class="line">        String username = context.getInitParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        <span class="comment">//输出context</span></span><br><span class="line">        System.out.println(<span class="string">&quot;context-param参数的username的值：&quot;</span> + username);</span><br><span class="line">        <span class="comment">//获取当前工程路径，输出/servlet</span></span><br><span class="line">        System.out.println(<span class="string">&quot;当前工程路径：&quot;</span> + context.getContextPath());</span><br><span class="line">        <span class="comment">//获取工程部署后在服务器硬盘上的绝对路径</span></span><br><span class="line">        <span class="comment">//	/被服务器解析为http://ip:port/工程名/，映射到IDEA代码的web目录</span></span><br><span class="line">        <span class="comment">//输出D:\JavaWeb\out\artifacts\servlet_war_exploded\</span></span><br><span class="line">        System.out.println(<span class="string">&quot;工程部署路径&quot;</span> + context.getRealPath(<span class="string">&quot;/&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>web.xml中的配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- context-param是上下文参数，属于整个web工程，以下代码写在servlet标签外 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>username<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>context<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>存取数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在ContextServlet1中保存的数据在ContextServlet2中也可以获取</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextServlet1</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        ServletContext context = getServletContext();</span><br><span class="line">        System.out.println(<span class="string">&quot;保存之前：&quot;</span> + context.getAttribute(<span class="string">&quot;key1&quot;</span>));</span><br><span class="line">        context.setAttribute(<span class="string">&quot;key1&quot;</span>, <span class="string">&quot;value1&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存后：&quot;</span> + context.getAttribute(<span class="string">&quot;key1&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextServlet2</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        ServletContext context = getServletContext();</span><br><span class="line">        System.out.println(<span class="string">&quot;context2中取数据key1的值：&quot;</span> + context.getAttribute(<span class="string">&quot;key1&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-HTTP协议"><a href="#8-HTTP协议" class="headerlink" title="8. HTTP协议"></a>8. HTTP协议</h3><p>HTTP协议：客户端和服务器通信时发送的数据需要遵守的规则</p>
+<p>HTTP协议中的数据又叫报文</p>
+<h4 id="1-请求的HTTP协议格式"><a href="#1-请求的HTTP协议格式" class="headerlink" title="1. 请求的HTTP协议格式"></a>1. 请求的HTTP协议格式</h4><h5 id="1-GET请求"><a href="#1-GET请求" class="headerlink" title="1. GET请求"></a>1. GET请求</h5><ol>
+<li><p>请求行：</p>
+<p>请求的方式：GET</p>
+<p>请求的资源路径[+?+请求参数]</p>
+<p>请求的协议和版本号：HTTP/1.1</p>
+</li>
+<li><p>请求头：</p>
+<p>key:value键值对组成</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">请求行：</span><br><span class="line">GET &#x2F;servlet&#x2F;a.html HTTP&#x2F;1.1</span><br><span class="line">请求方式：GET	请求资源路径：&#x2F;servlet&#x2F;a.html	请求的协议和版本号：HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">请求头：</span><br><span class="line">Accept: text&#x2F;html, application&#x2F;xhtml+xml, image&#x2F;jxr, *&#x2F;*	客户端可以接收的数据类型</span><br><span class="line">Accept-Encoding: gzip, deflate		客户端可以接收的编码（压缩）格式</span><br><span class="line">Accept-Language: zh-Hans-CN, zh-Hans; q&#x3D;0.8, en-US; q&#x3D;0.5, en; q&#x3D;0.3	客户端可以接收的语言类型</span><br><span class="line">Connection: Keep-Alive		告诉服务器请求连接如何处理</span><br><span class="line">Cookie: JSESSIONID&#x3D;28FCE0BD14B3842C9502F23525CA2B1B; Idea-c9b63ea7&#x3D;cd77f753-25af-4e43-9ac3-702c2d6ee9e7</span><br><span class="line">Host: localhost:8080	请求的服务器和端口号</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; WOW64; Trident&#x2F;7.0; rv:11.0) like Gecko	浏览器信息</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-POST请求"><a href="#2-POST请求" class="headerlink" title="2.POST请求"></a>2.POST请求</h5><ol>
+<li><p>请求行：</p>
+<p>请求的方式：POST</p>
+<p>请求的资源路径：请求的资源路径[+?+请求参数]</p>
+<p>请求的协议和版本号：HTTP/1.1</p>
+</li>
+<li><p>请求头：key:value键值对</p>
+</li>
+<li><p>空行</p>
+</li>
+<li><p>请求体：发送给服务器的数据</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">请求行：</span><br><span class="line">GET &#x2F;servlet&#x2F;hello3 HTTP&#x2F;1.1</span><br><span class="line">请求方式：POST	请求资源路径：&#x2F;servlet&#x2F;hello3	请求的协议和版本号：HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">Accept: text&#x2F;html, application&#x2F;xhtml+xml, image&#x2F;jxr, *&#x2F;*	客户端可以接收的数据类型</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-Hans-CN, zh-Hans; q&#x3D;0.8, en-US; q&#x3D;0.5, en; q&#x3D;0.3</span><br><span class="line">Cache-Control: no-cache		如何控制缓存，no-cache不缓存</span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Length: 26		表示发送的数据长度为26</span><br><span class="line">Host: 127.0.0.1:8080</span><br><span class="line">Referer: http:&#x2F;&#x2F;localhost:8080&#x2F;servlet&#x2F;a.html		表示请求发起时，浏览器地址栏中的地址（从哪来）</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; WOW64; Trident&#x2F;7.0; rv:11.0) like Gecko</span><br><span class="line">Content-Type：表示发送数据的类型</span><br><span class="line">	application&#x2F;x-www-form-urlencoded</span><br><span class="line">		表示提交的数据格式是：name&#x3D;value&amp;name&#x3D;value，然后对其进行url编码</span><br><span class="line">		url编码是把非英文的内容转换为：%xx%xx</span><br><span class="line">	multipart&#x2F;form-data</span><br><span class="line">		表示以多端的形式提交数据给服务器（以流的形式）</span><br><span class="line">		</span><br><span class="line">空行</span><br><span class="line"></span><br><span class="line">action&#x3D;login&amp;username&#x3D;root		请求体，发送给服务器的数据</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>常用请求头：</p>
+<p>Accept：表示客户端可以接收的数据类型</p>
+<p>Accept-Language：表示客户端可以接收的语言类型</p>
+<p>User-Agent：表示客户端浏览器的信息</p>
+<p>Host：表示请求时的服务器ip和端口号</p>
+</li>
+<li><p>GET请求：</p>
+<ol>
+<li>form标签method=get</li>
+<li>a标签</li>
+<li>link标签引入css</li>
+<li>Script标签引入js文件</li>
+<li>ing标签引入图片</li>
+<li>iframe标签引入html页面</li>
+<li>在浏览器地址栏输入地址后敲回车</li>
+</ol>
+</li>
+<li><p>POST请求</p>
+<ol>
+<li>form标签method=post</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-响应的HTTP协议格式"><a href="#2-响应的HTTP协议格式" class="headerlink" title="2. 响应的HTTP协议格式"></a>2. 响应的HTTP协议格式</h4><ol>
+<li><p>响应行</p>
+<p>响应的协议和版本号</p>
+<p>响应状态吗</p>
+<p>响应状态描述符</p>
+</li>
+<li><p>响应头</p>
+<p>key:value键值对</p>
+</li>
+<li><p>空行</p>
+</li>
+<li><p>响应体：回传给客户端的数据</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">响应行</span><br><span class="line">HTTP&#x2F;1.1 200 OK</span><br><span class="line">响应的协议：HTTP&#x2F;1.1	响应状态码：200	响应状态描述符：OK</span><br><span class="line"></span><br><span class="line">响应头</span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Content-Length: 365		响应体的长度</span><br><span class="line">Content-Type: text&#x2F;html		响应体的数据类型</span><br><span class="line">Date: Thu, 13 May 2021 08:42:10 GMT		请求响应的时间（格林尼治时间）</span><br><span class="line">ETag: W&#x2F;&quot;365-1620784778877&quot;</span><br><span class="line">Last-Modified: Wed, 12 May 2021 01:59:38 GMT</span><br><span class="line">Server: Apache-Coyote&#x2F;1.1		服务器信息</span><br><span class="line"></span><br><span class="line">空行</span><br><span class="line"></span><br><span class="line">响应体</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;form action&#x3D;&quot;http:&#x2F;&#x2F;127.0.0.1:8080&#x2F;servlet&#x2F;hello3&quot; method&#x3D;&quot;post&quot;&gt;</span><br><span class="line">        &lt;input type&#x3D;&quot;hidden&quot; name&#x3D;&quot;action&quot; value&#x3D;&quot;login&quot;&gt;</span><br><span class="line">        &lt;input type&#x3D;&quot;hidden&quot; name&#x3D;&quot;username&quot; value&#x3D;&quot;root&quot;&gt;</span><br><span class="line">        &lt;input type&#x3D;&quot;submit&quot;&gt;</span><br><span class="line">    &lt;&#x2F;form&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h5 id="常见的响应码"><a href="#常见的响应码" class="headerlink" title="常见的响应码"></a>常见的响应码</h5><p>200：请求成功</p>
+<p>302：重定向成功</p>
+<p>404：表示服务器已经收到请求，但是数据不存在（请求地址错误）</p>
+<p>500：表示服务器已经收到请求，但是服务器内部错误</p>
+</li>
+<li><h5 id="MIME类型"><a href="#MIME类型" class="headerlink" title="MIME类型"></a>MIME类型</h5><p>MIME（Multipurpose Internet Mail Extensions，多功能邮件扩充服务）是HTTP协议中的数据类型</p>
+<p>MIME类型的格式是：大类型/小类型，并与某一种文件的扩展名相对应</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>MIME类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>超文本标记语言文本</td>
+<td>.html, .htm    text/html</td>
+</tr>
+<tr>
+<td>普通文本</td>
+<td>.txt    text/plain</td>
+</tr>
+<tr>
+<td>RTF文本</td>
+<td>.rtf    application/rtf</td>
+</tr>
+<tr>
+<td>GIF图形</td>
+<td>.gif    image/gif</td>
+</tr>
+<tr>
+<td>JPEG图形</td>
+<td>.jpeg, .jpg    image/jpeg</td>
+</tr>
+<tr>
+<td>au声音文件</td>
+<td>.au    audio/basic</td>
+</tr>
+<tr>
+<td>MIDI音乐文件</td>
+<td>.mid, .midi    audio/midi, audio/x-midi</td>
+</tr>
+<tr>
+<td>RealAudio音乐文件</td>
+<td>.ra, .ram    audio/x-pn-realaudio</td>
+</tr>
+<tr>
+<td>MPEG文件</td>
+<td>.mpg, .mpeg    video/mpeg</td>
+</tr>
+<tr>
+<td>AVI 文件</td>
+<td>.avi    video/x-msvideo</td>
+</tr>
+<tr>
+<td>GZIP 文件</td>
+<td>.gz    application/x-gzip</td>
+</tr>
+<tr>
+<td>TAR 文件</td>
+<td>.tar    application/x-tar</td>
+</tr>
+</tbody></table>
+<h3 id="9-HttpServletRequest类"><a href="#9-HttpServletRequest类" class="headerlink" title="9. HttpServletRequest类"></a>9. HttpServletRequest类</h3><p>每次有请求进入Tomcat服务器，Tomcat服务器就会把请求过来的HTTP协议信息解析封装到Request对象中，传递到service方法（doGet和doPost）中以供使用。</p>
+<p>通过HttpServletRequest对象可以获取到请求的所有信息</p>
+<p>HttpServletRequest类的常用方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getRequestURI()</td>
+<td>获取请求的资源路径</td>
+</tr>
+<tr>
+<td>getRequestURL()</td>
+<td>获取请求的统一资源定位符（绝对路径）</td>
+</tr>
+<tr>
+<td>getRemoteHost()</td>
+<td>获取客户端的ip地址</td>
+</tr>
+<tr>
+<td>getHeader()</td>
+<td>获取请求头</td>
+</tr>
+<tr>
+<td>getParameter()</td>
+<td>获取请求的参数</td>
+</tr>
+<tr>
+<td>getPatameterValues()</td>
+<td>获取请求的参数（多个值）</td>
+</tr>
+<tr>
+<td>getMethod()</td>
+<td>获取请求的方式（GET/POST）</td>
+</tr>
+<tr>
+<td>setAttribute(key, value)</td>
+<td>设置域数据</td>
+</tr>
+<tr>
+<td>getAttribute(key)</td>
+<td>获取域数据</td>
+</tr>
+<tr>
+<td>getRequestDispatcher()</td>
+<td>获取请求转发对象</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestAPIServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//getRequestURI()：获取请求的资源路径</span></span><br><span class="line">        <span class="comment">//URI:/servlet2/requestAPIServlet</span></span><br><span class="line">        System.out.println(<span class="string">&quot;URI:&quot;</span> + request.getRequestURI());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//getRequestURL()：获取请求的绝对路径</span></span><br><span class="line">        <span class="comment">//URL:http://127.0.0.1:8080/servlet2/requestAPIServlet</span></span><br><span class="line">        System.out.println(<span class="string">&quot;URL:&quot;</span> + request.getRequestURL());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//getRemoteHost()：获取客户端ip地址</span></span><br><span class="line">        <span class="comment">//在IDEA中，使用localhost或127.0.0.1访问时，得到的客户端ip地址是127.0.0.1</span></span><br><span class="line">        <span class="comment">//使用真实ip访问时，得到的客户端ip地址是真实的客户端ip地址</span></span><br><span class="line">        <span class="comment">//客户端ip地址:127.0.0.1</span></span><br><span class="line">        System.out.println(<span class="string">&quot;客户端ip地址:&quot;</span> + request.getRemoteHost());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//getHeader()：获取请求头</span></span><br><span class="line">        <span class="comment">//请求头User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36</span></span><br><span class="line">        System.out.println(<span class="string">&quot;请求头User-Agent:&quot;</span> + request.getHeader(<span class="string">&quot;User-Agent&quot;</span>));</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//getMethod()：获取请求方式（GET/POST）</span></span><br><span class="line">        <span class="comment">//请求的方式:GET</span></span><br><span class="line">        System.out.println(<span class="string">&quot;请求的方式:&quot;</span> + request.getMethod());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取请求参数：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://localhost:8080/servlet2/parameterServlet&quot;</span> <span class="attr">method</span>=<span class="string">&quot;get&quot;</span>&gt;</span></span><br><span class="line">	用户名：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">	密码：<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;java&quot;</span>&gt;</span>Java</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;cpp&quot;</span>&gt;</span>C++</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">name</span>=<span class="string">&quot;hobby&quot;</span> <span class="attr">value</span>=<span class="string">&quot;js&quot;</span>&gt;</span>JavaScript</span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParameterServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;用户名：&quot;</span> + req.getParameter(<span class="string">&quot;username&quot;</span>));</span><br><span class="line">        System.out.println(<span class="string">&quot;密码：&quot;</span> + req.getParameter(<span class="string">&quot;password&quot;</span>));</span><br><span class="line">        String[] hobbies = req.getParameterValues(<span class="string">&quot;hobby&quot;</span>);		<span class="comment">//返回数组</span></span><br><span class="line">        <span class="comment">//兴趣爱好：[java, cpp, js]</span></span><br><span class="line">        System.out.println(<span class="string">&quot;兴趣爱好：&quot;</span> + Arrays.asList(hobbies));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>POST请求的中文乱码问题解决：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParameterServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//设置请求体字符集为UTF-8，解决中文乱码问题</span></span><br><span class="line">        <span class="comment">//必须在所有getParameter方法之前使用才有效</span></span><br><span class="line">        req.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;-----------dePost----------&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;用户名：&quot;</span> + req.getParameter(<span class="string">&quot;username&quot;</span>));</span><br><span class="line">        System.out.println(<span class="string">&quot;密码：&quot;</span> + req.getParameter(<span class="string">&quot;password&quot;</span>));</span><br><span class="line">        String[] hobbies = req.getParameterValues(<span class="string">&quot;hobby&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;兴趣爱好：&quot;</span> + Arrays.asList(hobbies));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="请求的转发"><a href="#请求的转发" class="headerlink" title="请求的转发"></a>请求的转发</h4><p>服务器收到请求后，从一处资源跳转到另一处资源的操作叫请求转发</p>
+<p>请求转发的特点：</p>
+<ol>
+<li>浏览器地址栏没有变化</li>
+<li>总共是一次请求</li>
+<li>共享Request域中的数据</li>
+<li>可以转发到WEB-INF目录下</li>
+<li>不可以访问工程以外的资源</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Servlet1</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        String username = req.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;在Servlet1中查看参数：&quot;</span> + username);</span><br><span class="line">        req.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;柜台1的章&quot;</span>);</span><br><span class="line">        RequestDispatcher requestDispatcher = req.getRequestDispatcher(<span class="string">&quot;/servlet2&quot;</span>);</span><br><span class="line">        requestDispatcher.forward(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Servlet2</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        String username = req.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;在servlet2中查看参数：&quot;</span> + username);</span><br><span class="line">        Object key = req.getAttribute(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;柜台1是否有章：&quot;</span> + key);</span><br><span class="line">        System.out.println(<span class="string">&quot;Servlet2处理自己的业务&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h4 id="base标签"><a href="#base标签" class="headerlink" title="base标签"></a>base标签</h4></li>
+</ul>
+<p>使用相对路径进行页面跳转时有时会发生错误：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    这是web下的index.html<span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;a/b/c.html&quot;</span>&gt;</span>a/b/c.html<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;http://localhost:8080/servlet2/forwardC&quot;</span>&gt;</span>请求转发<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    这是a下的b下的c.html<span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;../../index.html&quot;</span>&gt;</span>跳回首页<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">public class ForwardC extends HttpServlet &#123;</span><br><span class="line">    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException &#123;</span><br><span class="line">        req.getRequestDispatcher(&quot;/a/b/c.html&quot;).forward(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所有相对路径在工作时都会参照当前浏览器地址栏中的地址进行跳转</p>
+<p>点击a标签进行跳转时，浏览器中的地址是：<a target="_blank" rel="noopener" href="http://localhost:8080/servlet2/a/b/index.html%EF%BC%8C%E6%9C%80%E7%BB%88%E5%BE%97%E5%88%B0%E7%9A%84%E5%9C%B0%E5%9D%80%E6%98%AF%EF%BC%9Ahttp://localhost:8080/servlet2/index.html">http://localhost:8080/servlet2/a/b/c.html，跳转回去的相对路径为：../../index.html，最终得到的地址是：http://localhost:8080/servlet2/index.html</a></p>
+<p>使用请求转发进行跳转时，浏览器中的地址为：<a target="_blank" rel="noopener" href="http://localhost:8080/servlet2/index.html%EF%BC%8C%E6%9C%80%E7%BB%88%E5%BE%97%E5%88%B0%E7%9A%84%E5%9C%B0%E5%9D%80%E6%98%AF%EF%BC%9Ahttp://localhost:8080/index.html">http://localhost:8080/servlet2/fowardC，跳转回去的相对路径为：../../index.html，最终得到的地址是：http://localhost:8080/index.html</a></p>
+<p>使用base标签设置页面相对路径的参照地址：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 最后的文件名可以省略，但/斜杠不能省略 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">base</span> <span class="attr">href</span>=<span class="string">&quot;http://localhost:8080/servlet2/a/b/&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    这是a下的b下的c.html<span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;../../index.html&quot;</span>&gt;</span>跳回首页<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Web中的相对路径和绝对路径</li>
+</ul>
+<p>相对路径：</p>
+<p>​    .        表示当前目录</p>
+<p>​    ..        表示上一级目录</p>
+<p>​    资源名        表示当前目录/资源名</p>
+<p>绝对路径：<a href="http://ip:port/工程路径/资源路径">http://ip:port/工程路径/资源路径</a></p>
+<p>在实际开发中都使用绝对路径（或base+相对路径）</p>
+<ul>
+<li>Web中/斜杠的不同意义</li>
+</ul>
+<p>在web中，/斜杠是一种绝对路径</p>
+<p>/斜杠如果被浏览器解析，得到的地址是：<a href="http://ip:port/">http://ip:port/</a></p>
+<p>/斜杠如果被服务器解析，得到的地址是：<a href="http://ip:port/工程路径/">http://ip:port/工程路径/</a></p>
+<p>特殊情况：response.sendRediect(“/“);        表示把斜杠发送给浏览器解析，得到<a href="http://ip:port/">http://ip:port/</a></p>
+<h3 id="10-HttpServletResponse类"><a href="#10-HttpServletResponse类" class="headerlink" title="10. HttpServletResponse类"></a>10. HttpServletResponse类</h3><p>HttpServletResponse类和HttpServletRequest类一样，Tomcat服务器会对每一次请求创建一个Response对象传递给Servlet程序使用。HttpServletRequest表示请求过来的信息，HttpServletResponse表示所有响应的信息。</p>
+<p>通过设置HttpServletResponse对象可以设置返回给客户端的数据</p>
+<ul>
+<li><p>两个输出流：</p>
+<p>getOutputStream();        字节流，常用于下载（传递二进制数据）</p>
+<p>getWrite();        字符流，常用于回传字符串</p>
+</li>
+</ul>
+<p>两个流只能同时使用一个，否则会报错</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseIOServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        resp.getOutputStream();</span><br><span class="line">        resp.getWriter();		<span class="comment">//报错：IllegalStateException</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>往客户端回传字符串数据：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseIOServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        PrintWriter writer = resp.getWriter();</span><br><span class="line">        <span class="comment">//在浏览器显示heisenberg</span></span><br><span class="line">        writer.write(<span class="string">&quot;heisenberg&quot;</span>);		<span class="comment">//或者使用print/println方法</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>响应汉字乱码解决</p>
+<p>第一种方法（不推荐使用）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置服务器字符集为UTF-8</span></span><br><span class="line">resp.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"><span class="comment">//通过响应头设置浏览器也使用UTF-8</span></span><br><span class="line">resp.setHeader(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;text/html; charset=UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>第二种方法（推荐）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//同时设置服务器和客户端都使用UTF-8字符集</span></span><br><span class="line"><span class="comment">//这种方法必须在获取流对象之前调用才有效</span></span><br><span class="line">resp.setContentType(<span class="string">&quot;text/html; charset=UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="请求重定向"><a href="#请求重定向" class="headerlink" title="请求重定向"></a>请求重定向</h4><p>请求重定向：是指客户端给服务器发请求，服务器给客户端一个新地址，客户端重新访问这个新地址</p>
+<p>请求重定向的特点：</p>
+<ol>
+<li>浏览器地址栏地址发生变化</li>
+<li>浏览器发起两次请求</li>
+<li>不共享Request域中的数据</li>
+<li>不能访问WEB-INF下的资源（请求重定向是浏览器发起请求，而WEB-INF文件夹不能被浏览器直接访问）</li>
+<li>可以访问工程外的资源</li>
+</ol>
+<p>第一种方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response1</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;浏览器访问Response1&quot;</span>);</span><br><span class="line">        <span class="comment">//设置响应状态码302，表示重定向</span></span><br><span class="line">        resp.setStatus(<span class="number">302</span>);</span><br><span class="line">        <span class="comment">//设置响应头，给出新地址</span></span><br><span class="line">        resp.setHeader(<span class="string">&quot;Location&quot;</span>, <span class="string">&quot;http://localhost:8080/servlet2/response2&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response2</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        resp.getWriter().write(<span class="string">&quot;Response2&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种方法（推荐）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Response1</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        resp.sendRedirect(<span class="string">&quot;http://localhost:8080/servlet2/response2&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="11-jsp"><a href="#11-jsp" class="headerlink" title="11. jsp"></a>11. jsp</h3><p>jsp：java server pages，Java的服务器页面</p>
+<p>jsp用来代替Servlet程序回传html页面的数据（使用Servlet回传html页面太麻烦，需要频繁使用write方法）</p>
+<ul>
+<li><p>jsp的本质是一个Servlet程序：</p>
+<p>第一次访问jsp页面时，Tomcat服务器会把jsp页面翻译为一个java源文件，并编译成.class字节码文件</p>
+<p>翻译出的源代码中有一个HttpJspBase类，继承HttpServlet类，所以翻译出的程序是一个Servlet程序</p>
+</li>
+</ul>
+<h4 id="jsp三种语法"><a href="#jsp三种语法" class="headerlink" title="jsp三种语法"></a>jsp三种语法</h4><h5 id="1-jsp头部的page指令"><a href="#1-jsp头部的page指令" class="headerlink" title="1. jsp头部的page指令"></a>1. jsp头部的page指令</h5><p>jsp的page指令可以修改jsp页面中一些重要的属性/行为</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>language</td>
+<td>表示jsp翻译为那种语言，目前只支持java</td>
+</tr>
+<tr>
+<td>contentType</td>
+<td>表示jsp返回的数据类型，是源码中response.setContentType()参数值</td>
+</tr>
+<tr>
+<td>pageEncoding</td>
+<td>表示jsp页面使用的字符集</td>
+</tr>
+<tr>
+<td>import</td>
+<td>与java源码相同，用于导包</td>
+</tr>
+<tr>
+<td>autoFlush</td>
+<td>设置当out输出流缓冲区满了以后，是否自动刷新缓冲区，默认值为true</td>
+</tr>
+<tr>
+<td>buffer</td>
+<td>设置out缓冲区的大小，默认为8kb</td>
+</tr>
+<tr>
+<td>errorPage</td>
+<td>设置jsp页面运行出错时，自动跳转的页面路径。以/斜杠打头，表示工程路径下</td>
+</tr>
+<tr>
+<td>isErrorPage</td>
+<td>设置当前jsp页面是否是错误信息页面，默认为false</td>
+</tr>
+<tr>
+<td>session</td>
+<td>设置访问当前jsp页面时，是否创建HttpSession对象，默认为true</td>
+</tr>
+<tr>
+<td>extends</td>
+<td>设置jsp翻译出来的java类默认继承谁</td>
+</tr>
+</tbody></table>
+<h5 id="2-jsp中常用脚本"><a href="#2-jsp中常用脚本" class="headerlink" title="2. jsp中常用脚本"></a>2. jsp中常用脚本</h5><h6 id="声明脚本（极少使用）："><a href="#声明脚本（极少使用）：" class="headerlink" title="声明脚本（极少使用）："></a>声明脚本（极少使用）：</h6><p>格式：&lt;%! 声明java代码 %&gt;</p>
+<p>可以为jsp翻译出来的java类定义属性、方法、静态代码块、内部类等</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--<span class="number">1.</span> 声明属性类--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="keyword">private</span> Integer id;</span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer, String&gt; map;</span><br><span class="line">    %&gt;</span><br><span class="line"></span><br><span class="line">&lt;%--<span class="number">2.</span> 声明<span class="keyword">static</span>静态代码块--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="keyword">static</span>&#123;</span><br><span class="line">            map = <span class="keyword">new</span> HashMap&lt;Integer, String&gt;();</span><br><span class="line">            map.put(<span class="number">1</span>, <span class="string">&quot;value1&quot;</span>);</span><br><span class="line">            map.put(<span class="number">2</span>, <span class="string">&quot;value2&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br><span class="line"></span><br><span class="line">&lt;%--<span class="number">3.</span> 声明类方法--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">abc</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">20</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br><span class="line"></span><br><span class="line">&lt;%--<span class="number">4.</span> 声明内部类--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">private</span> String abc = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="表达式脚本（常用）："><a href="#表达式脚本（常用）：" class="headerlink" title="表达式脚本（常用）："></a>表达式脚本（常用）：</h6><p>格式：&lt;%= 表达式 %&gt;</p>
+<p>表达式脚本可以在jsp页面上输出数据</p>
+<ol>
+<li>所有表达式脚本都会被翻译到_jspService()方法中</li>
+<li>表达式脚本都会被翻译为out.print()输出到页面上</li>
+<li>由于表达式脚本翻译的内容都在_jspService()方法中，所以jspService()方法中的对象都可以直接使用</li>
+<li>表达式脚本中的表达式不能以分号结束</li>
+</ol>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%=<span class="number">12</span>%&gt;&lt;br&gt;</span><br><span class="line">&lt;%=<span class="number">20.5</span>%&gt;&lt;br&gt;</span><br><span class="line">&lt;%=<span class="string">&quot;heisenberg&quot;</span>%&gt;&lt;br&gt;</span><br><span class="line">&lt;%=map%&gt;&lt;br&gt;</span><br><span class="line">&lt;%=request.getParameter(<span class="string">&quot;username&quot;</span>)%&gt;</span><br></pre></td></tr></table></figure>
+
+<h6 id="代码脚本："><a href="#代码脚本：" class="headerlink" title="代码脚本："></a>代码脚本：</h6><p>格式：&lt;% java语句 %&gt;</p>
+<p>代码脚本可以在jsp页面中编写需要的java语句</p>
+<ol>
+<li>代码脚本翻译后都在_jspService()方法中</li>
+<li>在_jspService()方法中的对象都可以直接使用</li>
+<li>多个代码脚本块可以组成一个完整的java语句</li>
+<li>代码脚本可以和表达式脚本组合使用，在jsp页面上输出数据</li>
+</ol>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--<span class="number">1.</span> <span class="keyword">if</span>语句--%&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">20</span>;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">20</span>)&#123;</span><br><span class="line"></span><br><span class="line">    %&gt;</span><br><span class="line">        &lt;%=i%&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;&lt;br&gt;</span><br><span class="line"></span><br><span class="line">&lt;%--<span class="number">2.</span> <span class="keyword">for</span>循环语句--%&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span>; j++) &#123;</span><br><span class="line">    %&gt;</span><br><span class="line">        &lt;%=j + <span class="number">1</span>%&gt;&lt;br&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br><span class="line"></span><br><span class="line">&lt;%--<span class="number">3.</span> 获取用户请求参数--%&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        String username = request.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">    %&gt;</span><br><span class="line">        &lt;%=username%&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>jsp中的三种注释：</p>
+<p>html注释：会被翻译到java源代码中</p>
+<p>java注释：会被翻译到java源代码中</p>
+<p>jsp注释：可以注掉jsp页面中所有代码</p>
+</li>
+</ul>
+<h4 id="jsp九大内置对象"><a href="#jsp九大内置对象" class="headerlink" title="jsp九大内置对象"></a>jsp九大内置对象</h4><table>
+<thead>
+<tr>
+<th>对象名</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>request</td>
+<td>请求对象</td>
+</tr>
+<tr>
+<td>response</td>
+<td>响应对象</td>
+</tr>
+<tr>
+<td>pageContext</td>
+<td>jsp的上下文对象</td>
+</tr>
+<tr>
+<td>session</td>
+<td>会话对象</td>
+</tr>
+<tr>
+<td>application</td>
+<td>ServletContext对象</td>
+</tr>
+<tr>
+<td>config</td>
+<td>ServletConfig对象</td>
+</tr>
+<tr>
+<td>out</td>
+<td>jsp输出流对象</td>
+</tr>
+<tr>
+<td>page</td>
+<td>指向当前jsp的对象</td>
+</tr>
+<tr>
+<td>exception</td>
+<td>异常对象</td>
+</tr>
+</tbody></table>
+<h4 id="jsp四大域对象"><a href="#jsp四大域对象" class="headerlink" title="jsp四大域对象"></a>jsp四大域对象</h4><table>
+<thead>
+<tr>
+<th>域对象</th>
+<th>所属类</th>
+<th>有效范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pageContext</td>
+<td>PageContextImpl类</td>
+<td>当前jsp页面范围内有效</td>
+</tr>
+<tr>
+<td>request</td>
+<td>HttpServletRequest类</td>
+<td>一次请求内有效</td>
+</tr>
+<tr>
+<td>session</td>
+<td>HttpSession类</td>
+<td>一次会话范围内有效（从打开浏览器访问服务器，直到浏览器关闭）</td>
+</tr>
+<tr>
+<td>application</td>
+<td>ServletContext类</td>
+<td>整个web工程内有效（只要web工程不停止）</td>
+</tr>
+</tbody></table>
+<p>域对象是可以像map一样存取数据的对象，四个域对象功能相同</p>
+<p>使用优先顺序（范围从小到大）：pageContext –&gt; request –&gt; session –&gt; application</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	pageContext.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;pageContext&quot;</span>);</span><br><span class="line">	request.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;request&quot;</span>);</span><br><span class="line">	session.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;session&quot;</span>);</span><br><span class="line">	application.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;application&quot;</span>);</span><br><span class="line">%&gt;</span><br><span class="line">pageContext域的值：&lt;%=pageContext.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt;&lt;br&gt;</span><br><span class="line">request域的值：&lt;%=request.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt;&lt;br&gt;</span><br><span class="line">session域的值：&lt;%=session.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt;&lt;br&gt;</span><br><span class="line">application域的值：&lt;%=application.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>jsp中out输出和response.getWriter输出的区别：</p>
+<p>当jsp页面所有代码执行完成后会做以下两个操作：</p>
+<ol>
+<li>执行out.flush()，把out缓冲区中的数据追加写入response缓冲区末尾</li>
+<li>执行response的刷新操作，把全部数据写给客户端</li>
+</ol>
+</li>
+</ul>
+<p>jsp翻译后，底层源码都是使用out进行输出，在jsp页面统一使用out输出，可以避免打乱页面输出的顺序</p>
+<ul>
+<li><p>write()方法和print()方法：</p>
+<p>out.write()可以正常输出字符串</p>
+<p>out.print()可以输出任意数据（底层都转换文字符串后调用write输出）</p>
+<p>在jsp页面中，可以统一使用print()方法进行输出</p>
+</li>
+</ul>
+<h4 id="jsp常用标签"><a href="#jsp常用标签" class="headerlink" title="jsp常用标签"></a>jsp常用标签</h4><h5 id="jsp静态包含"><a href="#jsp静态包含" class="headerlink" title="jsp静态包含"></a>jsp静态包含</h5><p>语法：&lt;%@ include file=”” %&gt;</p>
+<p>file属性指定要包含的jsp页面路径，/斜杠表示<a href="http://ip:port/工程路径/，映射到web目录">http://ip:port/工程路径/，映射到web目录</a></p>
+<p>静态包含的特点：</p>
+<ol>
+<li>静态包含不会翻译被包含的jsp页面</li>
+<li>静态包含是把被包含的jsp页面代码拷贝到包含的位置进行输出</li>
+</ol>
+<h5 id="jsp动态包含"><a href="#jsp动态包含" class="headerlink" title="jsp动态包含"></a>jsp动态包含</h5><p>语法：&lt;jsp:include page=””&gt;&lt;/jsp:include&gt;</p>
+<p>动态包含特点：</p>
+<ol>
+<li><p>动态包含会把被包含的jsp页面也翻译为java代码</p>
+</li>
+<li><p>动态包含底层使用以下代码调用被包含的jsp页面执行输出：</p>
+<p>JspRuntimeLibrary.include(request, response, “/include/footer.jsp”, out, false);</p>
+</li>
+<li><p>可以传递参数：</p>
+</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:include page=<span class="string">&quot;/include/footer.jsp&quot;</span>&gt;</span><br><span class="line">	&lt;jsp:param name=<span class="string">&quot;username&quot;</span> value=<span class="string">&quot;heisenberg&quot;</span>/&gt;</span><br><span class="line">&lt;/jsp:include&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="jsp请求转发标签"><a href="#jsp请求转发标签" class="headerlink" title="jsp请求转发标签"></a>jsp请求转发标签</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:forward page=&quot;/scope2.jsp&quot;&gt;&lt;/jsp:forward&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="12-Listener监听器"><a href="#12-Listener监听器" class="headerlink" title="12. Listener监听器"></a>12. Listener监听器</h3><ol>
+<li>Listener监听器是JavaWeb三大组件之一，三大组件：Servlet程序、Filter过滤器、Listener监听器</li>
+<li>Listener是JavaEE规范（是接口）</li>
+<li>监听器用来监听某种事物的变化，通过回调函数反馈给客户（程序），进行相应的处理</li>
+</ol>
+<h4 id="ServletContextListener监听器"><a href="#ServletContextListener监听器" class="headerlink" title="ServletContextListener监听器"></a>ServletContextListener监听器</h4><ol>
+<li>ServletContextListener可以监听ServletContext对象的创建和销毁</li>
+<li>ServletContext对象在web工程启动时创建，在web工程停止时销毁</li>
+<li>监听到创建和销毁后会调用ServletContextListener的方法反馈</li>
+</ol>
+<p>ServletContextListener使用步骤：</p>
+<ol>
+<li>编写一个类实现ServletContextListener</li>
+<li>实现两个回调方法</li>
+<li>在web.xml中配置监听器</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyServletContextListenerImpl</span> <span class="keyword">implements</span> <span class="title">ServletContextListener</span> </span>&#123;</span><br><span class="line">    <span class="comment">//ServletContext对象创建后调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextInitialized</span><span class="params">(ServletContextEvent servletContextEvent)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;ServletContext对象被创建&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ServletContext对象销毁后调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextDestroyed</span><span class="params">(ServletContextEvent servletContextEvent)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;ServletContext对象被销毁&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>MyServletContextListenerImpl<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="13-EL表达式"><a href="#13-EL表达式" class="headerlink" title="13. EL表达式"></a>13. EL表达式</h3><p>EL表达式：Expression Language，是表达式语言</p>
+<p>语法：${表达式}</p>
+<p>EL表达式可以在jsp页面中替代表达式脚本进行数据输出</p>
+<p>jsp表达式脚本输出null值时，输出”null”字符串；EL表达式输出null值时，输出空串</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	request.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;value&quot;</span>);</span><br><span class="line">%&gt;</span><br><span class="line">表达式脚本输出：&lt;%=request.getAttribute(<span class="string">&quot;key1&quot;</span>)%&gt;		&lt;%-- 输出<span class="keyword">null</span> --%&gt;</span><br><span class="line">EL表达式输出：$&#123;key1&#125;		&lt;%-- 输出空串 --%&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>EL表达式搜索域数据的顺序：</p>
+<p>EL表达式主要输出域对象中的数据</p>
+<p>当域中数据有相同key时，按照从小到大的顺序搜索（pageContext-request-session-application）</p>
+</li>
+</ul>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;pageContext&quot;</span>);</span><br><span class="line">    request.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;request&quot;</span>);</span><br><span class="line">    session.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;session&quot;</span>);</span><br><span class="line">    application.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;application&quot;</span>);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;key&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>EL表达式输出自定义类的属性</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;		<span class="comment">//person类</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String[] phones;</span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; cities;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Object&gt; map;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">20</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//有参无参构造、toString、setter、getter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	Person person = <span class="keyword">new</span> Person();</span><br><span class="line">	person.setName(<span class="string">&quot;heisenberg&quot;</span>);</span><br><span class="line">	person.setPhones(<span class="keyword">new</span> String[]&#123;<span class="string">&quot;123&quot;</span>, <span class="string">&quot;456&quot;</span>, <span class="string">&quot;789&quot;</span>&#125;);</span><br><span class="line">	List&lt;String&gt; cities = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">	cities.add(<span class="string">&quot;北京&quot;</span>);</span><br><span class="line">    cities.add(<span class="string">&quot;上海&quot;</span>);</span><br><span class="line">    cities.add(<span class="string">&quot;纽约&quot;</span>);</span><br><span class="line">    person.setCities(cities);</span><br><span class="line">    Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    map.put(<span class="string">&quot;key1&quot;</span>, <span class="string">&quot;value1&quot;</span>);</span><br><span class="line">    map.put(<span class="string">&quot;key2&quot;</span>, <span class="string">&quot;value2&quot;</span>);</span><br><span class="line">    map.put(<span class="string">&quot;key3&quot;</span>, <span class="string">&quot;value3&quot;</span>);</span><br><span class="line">    person.setMap(map);</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;person&quot;</span>, person);</span><br><span class="line">%&gt;</span><br><span class="line">输出person：$&#123;person&#125;&lt;br&gt;		&lt;%-- 相当于调用person.toString() --%&gt;</span><br><span class="line">输出name属性：$&#123;person.name&#125;&lt;br&gt;		&lt;%-- 输出heisenberg --%&gt;</span><br><span class="line">输出phones属性：$&#123;person.phones&#125;&lt;br&gt;		&lt;%-- 输出数组地址 --%&gt;</span><br><span class="line">输出cities属性：$&#123;person.cities&#125;&lt;br&gt;		&lt;%-- 输出[北京, 上海, 纽约] --%&gt;</span><br><span class="line">输出map属性：$&#123;person.map&#125;&lt;br&gt;		&lt;%-- 输出&#123;key1=value1, key2=value2, key3=value3&#125; --%&gt;</span><br><span class="line"></span><br><span class="line">输出phones数组的某个元素值：$&#123;person.phones[<span class="number">0</span>]&#125;&lt;br&gt;		&lt;%-- 输出<span class="number">123</span> --%&gt;</span><br><span class="line">输出List中某个元素值：$&#123;person.cities[<span class="number">0</span>]&#125;&lt;br&gt;		&lt;%-- 输出北京 --%&gt;</span><br><span class="line">输出Map中某个key的值：$&#123;person.map.key1&#125;&lt;br&gt;		&lt;%-- 输出value1 --%&gt;</span><br><span class="line"></span><br><span class="line">输出age属性的值：$&#123;person.age&#125;		&lt;%-- 输出<span class="number">20</span>，只要有get方法就行，不一定要有属性 --%&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="EL表达式运算"><a href="#EL表达式运算" class="headerlink" title="EL表达式运算"></a>EL表达式运算</h4><h5 id="1-关系运算"><a href="#1-关系运算" class="headerlink" title="1. 关系运算"></a>1. 关系运算</h5><table>
+<thead>
+<tr>
+<th>关系运算符</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>== 或 eq</td>
+<td>等于</td>
+<td>${1 == 1} 或 ${1 eq 1}</td>
+</tr>
+<tr>
+<td>!= 或 ne</td>
+<td>不等于</td>
+<td>${1 != 1} 或 ${1 ne 1}</td>
+</tr>
+<tr>
+<td>&lt; 或 lt</td>
+<td>小于</td>
+<td>${1 &lt; 1} 或 ${1 lt 1}</td>
+</tr>
+<tr>
+<td>&gt; 或 gt</td>
+<td>大于</td>
+<td>${1 &gt; 1} 或 ${1 gt 1}</td>
+</tr>
+<tr>
+<td>&lt;= 或 le</td>
+<td>小于等于</td>
+<td>${1 &lt;= 1} 或 ${1 le 1}</td>
+</tr>
+<tr>
+<td>&gt;= 或 ge</td>
+<td>大于等于</td>
+<td>${1 &gt;= 1} 或 ${1 ge 1}</td>
+</tr>
+</tbody></table>
+<h5 id="2-逻辑运算"><a href="#2-逻辑运算" class="headerlink" title="2. 逻辑运算"></a>2. 逻辑运算</h5><table>
+<thead>
+<tr>
+<th>逻辑运算符</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&amp;&amp; 或 and</td>
+<td>与运算</td>
+<td>${true &amp;&amp; true} 或 ${true and true}</td>
+</tr>
+<tr>
+<td>|| 或 or</td>
+<td>或运算</td>
+<td>${true || true} 或 ${true or true}</td>
+</tr>
+<tr>
+<td>! 或 not</td>
+<td>取反运算</td>
+<td>${!true} 或 ${not true}</td>
+</tr>
+</tbody></table>
+<h5 id="3-算术运算"><a href="#3-算术运算" class="headerlink" title="3. 算术运算"></a>3. 算术运算</h5><table>
+<thead>
+<tr>
+<th>算术运算符</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>加法</td>
+<td>${1 + 1}</td>
+</tr>
+<tr>
+<td>-</td>
+<td>减法</td>
+<td>${1 - 1}</td>
+</tr>
+<tr>
+<td>*</td>
+<td>乘法</td>
+<td>${1 * 1}</td>
+</tr>
+<tr>
+<td>/ 或 div</td>
+<td>除法</td>
+<td>${1 / 1} 或 ${1 div 1}</td>
+</tr>
+<tr>
+<td>% 或 mod</td>
+<td>取模（求余数）</td>
+<td>${1 % 1} 或 ${1 mod 1}</td>
+</tr>
+</tbody></table>
+<h5 id="4-empty运算"><a href="#4-empty运算" class="headerlink" title="4. empty运算"></a>4. empty运算</h5><p>empty判断一个数据是否为空，为空输出true，非空输出false</p>
+<p>为空的情况：</p>
+<ol>
+<li>值为null</li>
+<li>空串</li>
+<li>长度为0的Object数组</li>
+<li>元素个数为0的List集合</li>
+<li>元素个数为0的Map集合</li>
+</ol>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;emptyNull&quot;</span>, <span class="keyword">null</span>);</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;emptyStr&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">    List list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;emptyList&quot;</span>, list);</span><br><span class="line">    Map map = <span class="keyword">new</span> HashMap();</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;emptyMap&quot;</span>, map);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;empty emptyNull&#125;&lt;br&gt;</span><br><span class="line">$&#123;empty emptyStr&#125;&lt;br&gt;</span><br><span class="line">$&#123;empty emptyList&#125;&lt;br&gt;</span><br><span class="line">$&#123;empty emptyMap&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-“-”点运算和-中括号运算符"><a href="#5-“-”点运算和-中括号运算符" class="headerlink" title="5. “.”点运算和[]中括号运算符"></a>5. “.”点运算和[]中括号运算符</h5><p>.点运算：可以输出Bean对象中某个属性的值</p>
+<p>[]中括号运算：可以输出有序集合中某个元素的值，还可以输出Map集合中含有特殊字符的key的值</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">	map.put(<span class="string">&quot;a.a.a&quot;</span>, <span class="string">&quot;aaaValue&quot;</span>);</span><br><span class="line">	map.put(<span class="string">&quot;b+b+b&quot;</span>, <span class="string">&quot;bbbValue&quot;</span>);</span><br><span class="line">	map.put(<span class="string">&quot;c-c-c&quot;</span>, <span class="string">&quot;cccValue&quot;</span>);</span><br><span class="line">	pageContext.setAttribute(<span class="string">&quot;map&quot;</span>, map);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;map.[<span class="string">&#x27;a.a.a&#x27;</span>]&#125;&lt;br&gt;</span><br><span class="line">$&#123;map.[<span class="string">&quot;b+b+b&quot;</span>]&#125;&lt;br&gt;</span><br><span class="line">$&#123;map.[<span class="string">&quot;c-c-c&quot;</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="6-三元运算"><a href="#6-三元运算" class="headerlink" title="6. 三元运算"></a>6. 三元运算</h5><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;<span class="number">1</span> == <span class="number">1</span> ? <span class="string">&quot;真&quot;</span> : <span class="string">&quot;假&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="EL表达式的11个隐含对象"><a href="#EL表达式的11个隐含对象" class="headerlink" title="EL表达式的11个隐含对象"></a>EL表达式的11个隐含对象</h4><table>
+<thead>
+<tr>
+<th>对象名</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pageContext</td>
+<td>PageContextImpl</td>
+<td>获取jsp的九大内置对象</td>
+</tr>
+<tr>
+<td>pageScope</td>
+<td>Map&lt;String, Object&gt;</td>
+<td>获取pageContext域中的数据</td>
+</tr>
+<tr>
+<td>requestScope</td>
+<td>Map&lt;String, Object&gt;</td>
+<td>获取Request域中的数据</td>
+</tr>
+<tr>
+<td>sessionScope</td>
+<td>Map&lt;String, Object&gt;</td>
+<td>获取Session域中的数据</td>
+</tr>
+<tr>
+<td>applicationScope</td>
+<td>Map&lt;String, Object&gt;</td>
+<td>获取ServletContext域中的数据</td>
+</tr>
+<tr>
+<td>param</td>
+<td>Map&lt;String, String&gt;</td>
+<td>获取请求参数的值</td>
+</tr>
+<tr>
+<td>paramValues</td>
+<td>Map&lt;String, String[]&gt;</td>
+<td>获取请求参数的值（多个）</td>
+</tr>
+<tr>
+<td>header</td>
+<td>Map&lt;String, String&gt;</td>
+<td>获取请求头的信息</td>
+</tr>
+<tr>
+<td>headerValues</td>
+<td>Map&lt;String, String[]&gt;</td>
+<td>获取请求头的信息（多个）</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>Map&lt;String, Cookie&gt;</td>
+<td>获取当前请求的Cookie信息</td>
+</tr>
+<tr>
+<td>initParam</td>
+<td>Map&lt;String, String&gt;</td>
+<td>获取在web.xml中配置的&lt;context-param&gt;上下文信息</td>
+</tr>
+</tbody></table>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;pageScope&quot;</span>);</span><br><span class="line">    request.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;request&quot;</span>);</span><br><span class="line">    session.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;session&quot;</span>);</span><br><span class="line">    application.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;application&quot;</span>);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;requestScope.key&#125;</span><br></pre></td></tr></table></figure>
+
+<p>pageContext对象的使用：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;%--</span><br><span class="line">    request.getScheme() 获取请求的协议</span><br><span class="line">    request.getServerName() 获取请求的服务器ip</span><br><span class="line">    request.getServerPort() 获取请求的服务器端口</span><br><span class="line">    request.getContextPath() 获取当前工程路径</span><br><span class="line">    request.getMethod() 获取请求的方式（GET/POST）</span><br><span class="line">    request.getRemoteHost() 获取客户端ip地址</span><br><span class="line">    session.getId() 获取会话的唯一标识</span><br><span class="line">--%&gt;</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 协议：$&#123;pageContext.request.scheme&#125;&lt;br&gt;</span><br><span class="line"><span class="number">2.</span> 服务器ip：$&#123;pageContext.request.serverName&#125;&lt;br&gt;</span><br><span class="line"><span class="number">3.</span> 服务器端口：$&#123;pageContext.request.serverPort&#125;&lt;br&gt;</span><br><span class="line"><span class="number">4.</span> 工程路径：$&#123;pageContext.request.contextPath&#125;&lt;br&gt;</span><br><span class="line"><span class="number">5.</span> 请求方式：$&#123;pageContext.request.method&#125;&lt;br&gt;</span><br><span class="line"><span class="number">6.</span> 客户端ip地址：$&#123;pageContext.request.remoteHost&#125;&lt;br&gt;</span><br><span class="line"><span class="number">7.</span> 会话id编号：$&#123;pageContext.session.id&#125;</span><br><span class="line"></span><br><span class="line">简写技巧：</span><br><span class="line">&lt;%</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;req&quot;</span>, request);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;req.scheme&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取请求参数的值：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/EL/e.jsp?username=root&amp;password=123&amp;hobby=java&amp;hobby=cpp">http://localhost:8080/EL/e.jsp?username=root&amp;password=123&amp;hobby=java&amp;hobby=cpp</a></p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输出请求参数username的值：$&#123;param.username&#125;&lt;br&gt;</span><br><span class="line">输出请求参数username的值：$&#123;param.password&#125;&lt;br&gt;</span><br><span class="line"></span><br><span class="line">输出请求参数username的值：$&#123;paramValues.username[<span class="number">0</span>]&#125;&lt;br&gt;</span><br><span class="line">输出请求参数hobby的值：$&#123;param.hobby&#125;&lt;br&gt;</span><br><span class="line">输出请求参数hobby的值：$&#123;paramValues.hobby[<span class="number">1</span>]&#125;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<p>获取请求头的信息：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输出请求头：$&#123;header&#125;&lt;br&gt;</span><br><span class="line">输出请求头User-Agent的值：$&#123;header[<span class="string">&#x27;User-Agent&#x27;</span>]&#125;&lt;br&gt;</span><br><span class="line">输出请求头User-Agent的值：$&#123;headerValues[<span class="string">&#x27;User-Agent&#x27;</span>][<span class="number">0</span>]&#125;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<p>获取Cookie信息：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">获取Cookie的名称：$&#123;cookie.JSESSIONID.name&#125;&lt;br&gt;</span><br><span class="line">获取Cookie的值：$&#123;cookie.JSESSIONID.value&#125;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<p>获取context-param上下文参数：</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出username的值：$&#123;initParam.username&#125;&lt;br&gt;</span><br><span class="line">输出password的值：$&#123;initParam.password&#125;</span><br></pre></td></tr></table></figure>
+
+<p>web.xml中的配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>username<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>heisenberg<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>password<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>123456<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="14-JSTL标签库"><a href="#14-JSTL标签库" class="headerlink" title="14. JSTL标签库"></a>14. JSTL标签库</h3><p>JSTL标签库：JSP Standard Tag Library，JSP标准标签库</p>
+<p>EL表达式替换JSP中的表达式脚本，标签库替换代码脚本</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>URL</th>
+<th>前缀</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心标签库（重点）</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/core">http://java.sun.com/jsp/jstl/core</a></td>
+<td>c</td>
+</tr>
+<tr>
+<td>格式化</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/fmt">http://java.sun.com/jsp/jstl/fmt</a></td>
+<td>fmt</td>
+</tr>
+<tr>
+<td>函数</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/functions">http://java.sun.com/jsp/jstl/functions</a></td>
+<td>fn</td>
+</tr>
+<tr>
+<td>数据库（不使用）</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/sql">http://java.sun.com/jsp/jstl/sql</a></td>
+<td>sql</td>
+</tr>
+<tr>
+<td>XML（不使用）</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/xml">http://java.sun.com/jsp/jstl/xml</a></td>
+<td>x</td>
+</tr>
+</tbody></table>
+<ul>
+<li>JSTL标签使用步骤：<ol>
+<li>导入JSTL标签库jar包：taglibs-standard-impl-1.2.1.jar、taglibs-standard-spec-1.2.1.jar</li>
+<li>使用taglib指令引入标签库</li>
+</ol>
+</li>
+</ul>
+<h4 id="1-core核心库"><a href="#1-core核心库" class="headerlink" title="1. core核心库"></a>1. core核心库</h4><h5 id="lt-c-set-gt-（使用较少）"><a href="#lt-c-set-gt-（使用较少）" class="headerlink" title="&lt;c:set /&gt;（使用较少）"></a>&lt;c:set /&gt;（使用较少）</h5><p>set标签可以往域中保存数据</p>
+<p>scope属性设置保存到哪个域：page表示pageContext域（默认值）、request表示Request域、session表示Session域、application表示ServletContext域</p>
+<p>var属性设置key，value属性设置值</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">保存之前：$&#123;pageScope.abc&#125;&lt;br&gt;</span><br><span class="line">&lt;c:set scope=<span class="string">&quot;page&quot;</span> <span class="keyword">var</span>=<span class="string">&quot;abc&quot;</span> value=<span class="string">&quot;abcValue&quot;</span>/&gt;</span><br><span class="line">保存之后：$&#123;pageScope.abc&#125;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="lt-c-if-gt"><a href="#lt-c-if-gt" class="headerlink" title="&lt;c:if /&gt;"></a>&lt;c:if /&gt;</h5><p>if标签用来做if判断</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:<span class="keyword">if</span> test=<span class="string">&quot;$&#123;2 &gt; 1&#125;&quot;</span>&gt;</span><br><span class="line">    <span class="number">2</span>&gt;<span class="number">1</span>		&lt;%-- 输出<span class="number">2</span>&gt;<span class="number">1</span> --%&gt;</span><br><span class="line">&lt;/c:if&gt;&lt;br&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="lt-c-choose-gt-lt-c-when-gt-lt-c-otherwise-gt"><a href="#lt-c-choose-gt-lt-c-when-gt-lt-c-otherwise-gt" class="headerlink" title="&lt;c:choose &gt;&lt;c:when&gt;&lt;c:otherwise&gt;"></a>&lt;c:choose &gt;&lt;c:when&gt;&lt;c:otherwise&gt;</h5><p>多路判断，类似switch…case…default</p>
+<p>choose标签开始选择判断</p>
+<p>when标签表示每一种情况，test属性表示当前情况的值</p>
+<p>otherwise标签表示剩下的情况</p>
+<ul>
+<li>注意事项：<ol>
+<li>标签里不能使用HTML注释，可以使用jsp注释</li>
+<li>when标签的父标签必须是choose标签</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    request.setAttribute(<span class="string">&quot;height&quot;</span>, <span class="number">175</span>);</span><br><span class="line">%&gt;</span><br><span class="line">&lt;c:choose&gt;</span><br><span class="line">    &lt;c:when test=<span class="string">&quot;$&#123;requestScope.height &gt; 190&#125;&quot;</span>&gt;</span><br><span class="line">        height大于<span class="number">190</span></span><br><span class="line">    &lt;/c:when&gt;</span><br><span class="line">    &lt;c:when test=<span class="string">&quot;$&#123;requestScope.height &gt; 180&#125;&quot;</span>&gt;</span><br><span class="line">        height大于<span class="number">180</span></span><br><span class="line">    &lt;/c:when&gt;</span><br><span class="line">    &lt;c:otherwise&gt;</span><br><span class="line">        &lt;c:choose&gt;		&lt;%-- 必须在choose标签里 --%&gt;</span><br><span class="line">            &lt;c:when test=<span class="string">&quot;$&#123;requestScope.height &gt; 170&#125;&quot;</span>&gt;</span><br><span class="line">                height大于<span class="number">170</span></span><br><span class="line">            &lt;/c:when&gt;</span><br><span class="line">            &lt;c:otherwise&gt;</span><br><span class="line">                其他情况</span><br><span class="line">            &lt;/c:otherwise&gt;</span><br><span class="line">        &lt;/c:choose&gt;</span><br><span class="line">    &lt;/c:otherwise&gt;</span><br><span class="line">&lt;/c:choose&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="lt-c-forEach-gt"><a href="#lt-c-forEach-gt" class="headerlink" title="&lt;c:forEach /&gt;"></a>&lt;c:forEach /&gt;</h5><p>遍历数字：</p>
+<p>begin属性设置开始的索引，end属性设置结束的索引</p>
+<p>var属性表示循环的变量（也是当前正在遍历到的数据）</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:forEach begin=<span class="string">&quot;1&quot;</span> end=<span class="string">&quot;10&quot;</span> <span class="keyword">var</span>=<span class="string">&quot;i&quot;</span>&gt;</span><br><span class="line">    $&#123;i&#125;&lt;br&gt;</span><br><span class="line">&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<p>遍历Object数组：</p>
+<p>items表示遍历的数据源（集合），var表示当前遍历到的数据</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    request.setAttribute(<span class="string">&quot;arr&quot;</span>, <span class="keyword">new</span> String[]&#123;<span class="string">&quot;123&quot;</span>, <span class="string">&quot;456&quot;</span>&#125;);</span><br><span class="line">%&gt;</span><br><span class="line">&lt;c:forEach items=<span class="string">&quot;$&#123;requestScope.arr&#125;&quot;</span> <span class="keyword">var</span>=<span class="string">&quot;item&quot;</span>&gt;</span><br><span class="line">    $&#123;item&#125;&lt;br&gt;</span><br><span class="line">&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<p>遍历Map集合：</p>
+<p>使用.key和.value可以获得键值对的键和值</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    map.put(<span class="string">&quot;key1&quot;</span>, <span class="string">&quot;value1&quot;</span>);</span><br><span class="line">    map.put(<span class="string">&quot;key2&quot;</span>, <span class="string">&quot;value2&quot;</span>);</span><br><span class="line">    map.put(<span class="string">&quot;key3&quot;</span>, <span class="string">&quot;value3&quot;</span>);</span><br><span class="line">    pageContext.setAttribute(<span class="string">&quot;map&quot;</span>, map);</span><br><span class="line">%&gt;</span><br><span class="line">&lt;c:forEach items=<span class="string">&quot;$&#123;pageScope.map&#125;&quot;</span> <span class="keyword">var</span>=<span class="string">&quot;entry&quot;</span>&gt;</span><br><span class="line">    $&#123;entry.key&#125; : $&#123;entry.value&#125;&lt;br&gt;</span><br><span class="line">&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<p>遍历List集合自定义类：</p>
+<p>step：表示遍历的步长值</p>
+<p>varStatus：表示当前遍历到的数据的状态，其中：</p>
+<ol>
+<li>status.current表示当前遍历到的数据</li>
+<li>status.index表示获取数据的索引</li>
+<li>status.count表示遍历的个数</li>
+<li>status.first、status.last表示当前数据是否是遍历的第一条/最后一条</li>
+<li>status.begin、status.end、status.step表示获取begin/end/step属性值</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    List&lt;Student&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++) &#123;</span><br><span class="line">        list.add(<span class="keyword">new</span> Student(i, <span class="string">&quot;name&quot;</span>+i, <span class="string">&quot;pass&quot;</span>+i));</span><br><span class="line">    &#125;</span><br><span class="line">    request.setAttribute(<span class="string">&quot;list&quot;</span>, list);</span><br><span class="line">%&gt;</span><br><span class="line">&lt;table&gt;</span><br><span class="line">    &lt;c:forEach begin=<span class="string">&quot;2&quot;</span> end=<span class="string">&quot;7&quot;</span> step=<span class="string">&quot;2&quot;</span>  varStatus=<span class="string">&quot;status&quot;</span> </span><br><span class="line">               items=<span class="string">&quot;$&#123;requestScope.list&#125;&quot;</span> <span class="keyword">var</span>=<span class="string">&quot;stu&quot;</span>&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;$&#123;stu.id&#125;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;$&#123;stu.username&#125;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;$&#123;stu.password&#125;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;$&#123;status.index&#125;&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;/c:forEach&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+
+</div><div class="post-copyright"><blockquote><p>Original author: Liu Sai</p><p>Original link: <a href="http://example.com/2021/05/08/JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库/">http://example.com/2021/05/08/JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库/</a></p><p>Copyright Notice: Please indicate the source of the reprint (must retain the author's signature and link)</p></blockquote></div><div class="tags"><a href="/tags/JavaWeb/">JavaWeb</a></div><div class="post-share"><div class="social-share"><span>Share:</span></div></div><div class="post-nav"><a href="/2021/05/21/JavaWeb%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ACookie%E3%80%81Session%E3%80%81Filter%E3%80%81JSON%E3%80%81AJAX/" class="pre">JavaWeb（三）：Cookie、Session、Filter、JSON、AJAX</a><a href="/2021/05/08/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/" class="next">尚硅谷书城项目</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">Contents</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaWeb"><span class="toc-text">JavaWeb</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-XML"><span class="toc-text">5.XML</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-XML%E5%85%83%E7%B4%A0"><span class="toc-text">1. XML元素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-XML%E8%A7%A3%E6%9E%90%E6%8A%80%E6%9C%AF%EF%BC%9ADom4j"><span class="toc-text">2. XML解析技术：Dom4j</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Tomcat"><span class="toc-text">6. Tomcat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Servlet"><span class="toc-text">7. Servlet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0Servlet%E7%A8%8B%E5%BA%8F%EF%BC%88%E5%AE%9E%E7%8E%B0Servlet%E6%8E%A5%E5%8F%A3%EF%BC%89"><span class="toc-text">1. 手动实现Servlet程序（实现Servlet接口）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Servlet%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Servlet生命周期</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%80%9A%E8%BF%87%E7%BB%A7%E6%89%BFHttpServlet%E5%AE%9E%E7%8E%B0Servlet%E7%A8%8B%E5%BA%8F"><span class="toc-text">2. 通过继承HttpServlet实现Servlet程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Servlet%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E4%BD%93%E7%B3%BB"><span class="toc-text">Servlet类的继承体系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ServletConfig%E7%B1%BB"><span class="toc-text">ServletConfig类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ServletConfig%E7%B1%BB%E7%9A%84%E4%B8%89%E5%A4%A7%E4%BD%9C%E7%94%A8%EF%BC%9A"><span class="toc-text">ServletConfig类的三大作用：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ServletContext%E6%8E%A5%E5%8F%A3"><span class="toc-text">ServletContext接口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-HTTP%E5%8D%8F%E8%AE%AE"><span class="toc-text">8. HTTP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%AF%B7%E6%B1%82%E7%9A%84HTTP%E5%8D%8F%E8%AE%AE%E6%A0%BC%E5%BC%8F"><span class="toc-text">1. 请求的HTTP协议格式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-GET%E8%AF%B7%E6%B1%82"><span class="toc-text">1. GET请求</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-POST%E8%AF%B7%E6%B1%82"><span class="toc-text">2.POST请求</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%93%8D%E5%BA%94%E7%9A%84HTTP%E5%8D%8F%E8%AE%AE%E6%A0%BC%E5%BC%8F"><span class="toc-text">2. 响应的HTTP协议格式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%93%8D%E5%BA%94%E7%A0%81"><span class="toc-text">常见的响应码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#MIME%E7%B1%BB%E5%9E%8B"><span class="toc-text">MIME类型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-HttpServletRequest%E7%B1%BB"><span class="toc-text">9. HttpServletRequest类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E7%9A%84%E8%BD%AC%E5%8F%91"><span class="toc-text">请求的转发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#base%E6%A0%87%E7%AD%BE"><span class="toc-text">base标签</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-HttpServletResponse%E7%B1%BB"><span class="toc-text">10. HttpServletResponse类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-text">请求重定向</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-jsp"><span class="toc-text">11. jsp</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#jsp%E4%B8%89%E7%A7%8D%E8%AF%AD%E6%B3%95"><span class="toc-text">jsp三种语法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-jsp%E5%A4%B4%E9%83%A8%E7%9A%84page%E6%8C%87%E4%BB%A4"><span class="toc-text">1. jsp头部的page指令</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-jsp%E4%B8%AD%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC"><span class="toc-text">2. jsp中常用脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E8%84%9A%E6%9C%AC%EF%BC%88%E6%9E%81%E5%B0%91%E4%BD%BF%E7%94%A8%EF%BC%89%EF%BC%9A"><span class="toc-text">声明脚本（极少使用）：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%84%9A%E6%9C%AC%EF%BC%88%E5%B8%B8%E7%94%A8%EF%BC%89%EF%BC%9A"><span class="toc-text">表达式脚本（常用）：</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%84%9A%E6%9C%AC%EF%BC%9A"><span class="toc-text">代码脚本：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jsp%E4%B9%9D%E5%A4%A7%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1"><span class="toc-text">jsp九大内置对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jsp%E5%9B%9B%E5%A4%A7%E5%9F%9F%E5%AF%B9%E8%B1%A1"><span class="toc-text">jsp四大域对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jsp%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE"><span class="toc-text">jsp常用标签</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#jsp%E9%9D%99%E6%80%81%E5%8C%85%E5%90%AB"><span class="toc-text">jsp静态包含</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#jsp%E5%8A%A8%E6%80%81%E5%8C%85%E5%90%AB"><span class="toc-text">jsp动态包含</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#jsp%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E6%A0%87%E7%AD%BE"><span class="toc-text">jsp请求转发标签</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-Listener%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-text">12. Listener监听器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ServletContextListener%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-text">ServletContextListener监听器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-EL%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">13. EL表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%90%E7%AE%97"><span class="toc-text">EL表达式运算</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97"><span class="toc-text">1. 关系运算</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97"><span class="toc-text">2. 逻辑运算</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97"><span class="toc-text">3. 算术运算</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-empty%E8%BF%90%E7%AE%97"><span class="toc-text">4. empty运算</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-%E2%80%9C-%E2%80%9D%E7%82%B9%E8%BF%90%E7%AE%97%E5%92%8C-%E4%B8%AD%E6%8B%AC%E5%8F%B7%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">5. “.”点运算和[]中括号运算符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97"><span class="toc-text">6. 三元运算</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%8411%E4%B8%AA%E9%9A%90%E5%90%AB%E5%AF%B9%E8%B1%A1"><span class="toc-text">EL表达式的11个隐含对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-JSTL%E6%A0%87%E7%AD%BE%E5%BA%93"><span class="toc-text">14. JSTL标签库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-core%E6%A0%B8%E5%BF%83%E5%BA%93"><span class="toc-text">1. core核心库</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#lt-c-set-gt-%EF%BC%88%E4%BD%BF%E7%94%A8%E8%BE%83%E5%B0%91%EF%BC%89"><span class="toc-text">&lt;c:set &#x2F;&gt;（使用较少）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#lt-c-if-gt"><span class="toc-text">&lt;c:if &#x2F;&gt;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#lt-c-choose-gt-lt-c-when-gt-lt-c-otherwise-gt"><span class="toc-text">&lt;c:choose &gt;&lt;c:when&gt;&lt;c:otherwise&gt;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#lt-c-forEach-gt"><span class="toc-text">&lt;c:forEach &#x2F;&gt;</span></a></li></ol></li></ol></li></ol></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/08/23/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8B%EF%BC%89/">社区项目（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/09/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8A%EF%BC%89/">社区项目（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/27/SpringMVC/">SpringMVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/20/Maven/">Maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/19/MyBatis/">MyBatis</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/05/Spring/">Spring</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/21/JavaWeb%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ACookie%E3%80%81Session%E3%80%81Filter%E3%80%81JSON%E3%80%81AJAX/">JavaWeb（三）：Cookie、Session、Filter、JSON、AJAX</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/JavaWeb%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AXML%E3%80%81Servlet%E3%80%81jsp%E3%80%81EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81JSTL%E6%A0%87%E7%AD%BE%E5%BA%93/">JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/">尚硅谷书城项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/04/13/JavaWeb%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AHTML%E3%80%81CSS%E3%80%81JavaScript%E3%80%81jQuery/">JavaWeb（一）：HTML、CSS、JavaScript、jQuery</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> Tags</i></div><div class="tagcloud"><a href="/tags/JDBC/" style="font-size: 15px;">JDBC</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Maven/" style="font-size: 15px;">Maven</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/JavaWeb/" style="font-size: 15px;">JavaWeb</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/SpringMVC/" style="font-size: 15px;">SpringMVC</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/tags/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">尚硅谷书城项目</a> <a href="/tags/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">社区项目</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> Archive</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> Blogroll</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Site Map</a> |  <a href="/atom.xml">Subscribe to this site</a> |  <a href="/about/">Contact the blogger</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">Liu Sai.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a target="_blank" rel="noopener" href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.5"></script><div id="fullscreen-img" class="hide"><span class="close"></span></div><script type="text/javascript" src="/js/imgview.js?v=2.0.5" async></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.5" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>
