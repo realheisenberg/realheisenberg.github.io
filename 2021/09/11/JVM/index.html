@@ -480,11 +480,259 @@
 <p>2）如果小于，则虚拟机会查看-XX:HandlePromotionFailure是否设置允许担保失败</p>
 <ol>
 <li><p>如果HandlePromotionFailure=true，会继续检查老年代最大可用连续空间是否大于历次晋升到老年代的对象的平均大小</p>
-<p>1.1 如果大于，则尝试进行Minor GC，但这次Minor GC仍是有风险的</p>
-<p>1.2 如果小于，则改为进行一次Full GC</p>
+<p>1.1. 如果大于，则尝试进行Minor GC，但这次Minor GC仍是有风险的</p>
+<p>1.2. 如果小于，则改为进行一次Full GC</p>
 </li>
 <li><p>如果HandlePromotionFailure=false，则进行一次Full GC</p>
 </li>
 </ol>
 <p>在JDK6 Update24之后，HandlePromotionFailure参数不再影响虚拟机的空间分配担保策略，只要老年代连续空间大于新生代对象总大小或大于历次晋升平均大小，则进行Minor GC，否则进行Full GC</p>
-</div><div class="post-copyright"><blockquote><p>Original author: Liu Sai</p><p>Original link: <a href="http://example.com/2021/09/11/JVM/">http://example.com/2021/09/11/JVM/</a></p><p>Copyright Notice: Please indicate the source of the reprint (must retain the author's signature and link)</p></blockquote></div><div class="tags"><a href="/tags/JVM/">JVM</a></div><div class="post-share"><div class="social-share"><span>Share:</span></div></div><div class="post-nav"><a href="/2021/08/23/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8B%EF%BC%89/" class="next">社区项目（下）</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">Contents</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM"><span class="toc-text">JVM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-text">一. 内存与垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JVM%E4%B8%8EJava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-text">1. JVM与Java体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JVM%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">JVM生命周期</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#JVM%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-text">JVM发展历程</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-text">2. 类加载子系统</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%88%86%E7%B1%BB"><span class="toc-text">类加载器分类</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">双亲委派机制</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-text">3. 运行时数据区</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-text">线程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-text">程序计数寄存器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="toc-text">虚拟机栈</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A0%86"><span class="toc-text">堆</span></a></li></ol></li></ol></li></ol></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/09/11/JVM/">JVM</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/23/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8B%EF%BC%89/">社区项目（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/09/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8A%EF%BC%89/">社区项目（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/27/SpringMVC/">SpringMVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/20/Maven/">Maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/19/MyBatis/">MyBatis</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/05/Spring/">Spring</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/21/JavaWeb%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ACookie%E3%80%81Session%E3%80%81Filter%E3%80%81JSON%E3%80%81AJAX/">JavaWeb（三）：Cookie、Session、Filter、JSON、AJAX</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/JavaWeb%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AXML%E3%80%81Servlet%E3%80%81jsp%E3%80%81EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81JSTL%E6%A0%87%E7%AD%BE%E5%BA%93/">JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/">尚硅谷书城项目</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> Tags</i></div><div class="tagcloud"><a href="/tags/JDBC/" style="font-size: 15px;">JDBC</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Maven/" style="font-size: 15px;">Maven</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/JavaWeb/" style="font-size: 15px;">JavaWeb</a> <a href="/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/JVM/" style="font-size: 15px;">JVM</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/SpringMVC/" style="font-size: 15px;">SpringMVC</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/tags/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">尚硅谷书城项目</a> <a href="/tags/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">社区项目</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> Archive</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> Blogroll</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Site Map</a> |  <a href="/atom.xml">Subscribe to this site</a> |  <a href="/about/">Contact the blogger</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">Liu Sai.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a target="_blank" rel="noopener" href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.5"></script><div id="fullscreen-img" class="hide"><span class="close"></span></div><script type="text/javascript" src="/js/imgview.js?v=2.0.5" async></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.5" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>
+<ul>
+<li><p>堆不是分配对象存储的唯一选择</p>
+<p>如果经过逃逸分析（Escape Analysis）后发现，一个对象并没有逃逸出方法，该对象就可能被优化成栈上分配</p>
+<p>开发中能使用局部变量的，就不要使用在方法外定义</p>
+</li>
+<li><p>逃逸分析</p>
+<p>逃逸分析是一种可以有效减少Java程序中同步负载和内存堆分配压力的跨函数全局数据流分析算法</p>
+<p>通过逃逸分析，Hotspot编译器能够分析出某对象的引用的使用范围，从而决定是否将该对象分配到堆上</p>
+<p>逃逸分析的基本行为就是分析对象动态作用域：</p>
+<ul>
+<li>方法中定义的对象，如果只在方法内部使用，则认为没有发生逃逸</li>
+<li>方法中定义的对象，如果被外部方法引用，则认为发生逃逸</li>
+</ul>
+<p>JDK6u23之后，Hotspot默认开启逃逸分析</p>
+</li>
+<li><p>使用逃逸分析，编译器可以对代码做出优化：</p>
+<ol>
+<li><p>栈上分配。将堆分配转为栈分配（对象没有逃逸出方法），分配完后继续在调用栈内执行，最后线程结束，栈空间被回收，局部变量对象也被回收，不需要进行GC</p>
+<p>栈上分配常见场景：为成员变量赋值、方法返回值、实例引用传递</p>
+</li>
+<li><p>同步省略。如果一个对象只能从一个线程被访问到，对于该对象的操作可以不考虑同步。在动态编译同步块时，JIT编译器可以借助逃逸分析来判断同步块所使用的锁对象是否只能被一个线程访问。如果是，编译时会取消代码同步，提高并发行和性能。取消同步的过程称为同步省略，也叫锁消除</p>
+</li>
+<li><p>分离对象或标量替换。有的对象可能不需要作为一个连续的内存结构存在也可以被访问，该对象的部分（或全部）可以不存储在内存（堆），而是存储在CPU寄存器（栈）中</p>
+<p>标量（Scalar）是指一个无法再分解成更小数据的数据。Java中的原始数据类型就是标量</p>
+<p>可以被分解的数据称为聚合量（Aggregate），Java中的对象就是聚合量，可以被分解为其他聚合量和标量</p>
+<p>标量替换：经过逃逸分析，如果发现一个对象不会被外界访问，JIT优化后会把该对象拆解为若干个其中包含的成员变量来代替</p>
+</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">alloc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Point point = <span class="keyword">new</span> Point(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>逃逸分析并不成熟</p>
+<p>根本原因在于无法确保经过逃逸分析的能量消耗小于原有方式的消耗（比如每个对象都是逃逸的），逃逸分析本身与要进行一系列复杂分析，是一个相对耗时的过程</p>
+<p>虽然逃逸分析技术并不成熟，但它是即时编译器优化技术中一个重要的手段</p>
+<p>Hotspot虚拟机中所有对象都是创建在堆上</p>
+</li>
+</ul>
+<h5 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h5><p>方法区看作是一块独立于Java堆的内存空间。《Java虚拟机规范》中说明：“尽管方法区在逻辑上是属于堆的一部分，但一些简单的实现可能不会进行垃圾收集或者压缩。”Hotspot虚拟机的方法区还叫做Non-Heap（非堆）</p>
+<p>方法区（Method Area）与堆一样，是各个线程共享的内存区域</p>
+<p>方法区在JVM启动时创建，与堆一样，它的实际物理内存空间可以是不连续的</p>
+<p>方法区的大小与堆一样，可以选择固定大小或可扩展</p>
+<p>方法区的大小决定了系统可以保存类的数量，如果系统定义了太多类、加载大量第三方jar包、Tomcat部署工程过多等导致方法区溢出，会抛出异常：java.lang.OutOfMemoryError: Metaspace（新）或java.lang.OutOfMemoryError: PermGen space（旧）</p>
+<p>关闭JVM会释放方法区内存</p>
+<ul>
+<li><p>Hotspot中方法区的改进</p>
+<p>JDK7及以前习惯把方法区称为永久代，JDK8开始使用元空间取代永久代</p>
+<p>方法区和永久代并不等价，只是对于Hotspot而言是这样的</p>
+<p>元空间和永久代都是对方法区的实现，元空间不在虚拟机设置的内存中，而是使用本地内存（与JRockit、J9一样）</p>
+<p>永久代、元空间并不只是名字改变，内部结构也不同</p>
+<p>当年使用永久代，导致Java程序更容易OOM</p>
+</li>
+<li><p>设置方法区大小</p>
+<p>JDK7及之前：-XX:PermSize设置永久代初始空间，默认为20.75M；-XX:MaxPermSize设置永久代最大空间，32位机器默认64M，64位机器默认82M</p>
+<p>JDK8及以后：使用-XX:MetaspaceSize和-XX:MaxMetaspaceSize代替原有参数。默认值依赖于平台，Windows下默认初始空间21M，最大空间值为-1，即没有限制（可以用尽所有系统内存）</p>
+<p>对于64位的服务端JVM，默认-XX:MetaspaceSize为21M，是初始高水位线。一旦触及该水位线，将触发Full GC并卸载没有用的类（即这些类对应的类加载器不再存活），高水位线将会重置（新的高水位线取决于GC后释放了多少元空间），如果释放空间不足，水位线适当提高；如果释放空间过多，水位线适当降低</p>
+<p>如果初始高水位线设置过低，高水位线将调整多次，发生多次Full GC</p>
+</li>
+<li><p>如何解决OOM</p>
+<p>通过内存映像分析工具（如Eclipse Memory Analyzer）对dump出来的堆转储快照进行分析，重点是确认内存中的对象是否是必要的，也就是分清楚是内存泄漏（Memory Leak）还是内存溢出（Memory Overflow）</p>
+<p>如果是内存泄漏，可进一步通过工具查看泄露对象到GC Roots的引用连，定位到泄露代码的位置</p>
+<p>如果不存在内存泄漏，即对象必须存活，检查虚拟机的堆参数，看是否可以调大；代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况，减少程序内存消耗</p>
+</li>
+<li><p>方法区存储内容</p>
+<p>方法区存储已被虚拟机加载的类型信息、常量、静态变量、即时编译器编译后的代码缓存等</p>
+<ol>
+<li><p>类型信息</p>
+<p>对每个加载的类型（类class、接口interface、枚举enum、注解annotation），JVM在方法区存储以下信息</p>
+<p>1）该类型的完整有效名称（包名.类名）</p>
+<p>2）该类型直接父类的完整有效名称（interface和java.lang.Object没有父类）</p>
+<p>3）该类型的修饰符（public，abstract，final的某个子集）</p>
+<p>4）该类型直接接口的一个有序列表</p>
+</li>
+<li><p>域（Field）信息</p>
+<p>JVM必须在方法区保存所有域的相关信息以及域的声明顺序</p>
+<p>域的相关信息包括：域名城、域类型、域修饰符（public，private，protected，static，final，volatile，transient的某个子集）</p>
+</li>
+<li><p>方法（Method）信息</p>
+<p>JVM保存以下方法信息，同域信息一样包括声明顺序：</p>
+<p>方法名称、方法返回类型（或void）、方法参数的数量和类型（按顺序）、方法修饰符</p>
+<p>方法的字节码（bytecodes）、操作数栈、局部变量表及大小（abstract、native方法除外）</p>
+<p>异常表（abstract、native方法除外）：每个异常处理的开始位置、结束位置、代码处理在程序计数器中的偏移地址、被捕获的异常类的常量池索引</p>
+</li>
+<li><p>non-final的类变量</p>
+<p>静态变量和类关联在一起随着类的加载而加载，成为类数据在逻辑上的一部分</p>
+<p>类变量被类的所有实例共享，即使没有类实例也可以访问</p>
+</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MethodAreaTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Order order = <span class="keyword">null</span>;</span><br><span class="line">        System.out.println(order.count);</span><br><span class="line">        order.hello();		<span class="comment">//正常执行不报错</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>全局变量：static final</p>
+<p>每个全局变量在编译时就被分配了</p>
+<ul>
+<li><p>运行时常量池与常量池</p>
+<p>方法区中包含运行时常量池，字节码文件中包含常量池</p>
+<p>常量池可以看做是一张表，虚拟机指令根据这张常量表找到要执行的类名、方法名、参数类型、字面量等类型</p>
+<p>常量池表（Constant Pool Table）是class文件的一部分，存储编译期生成的各种字面量与符号引用，这部分内容在类加载后存放到方法区的运行时常量池中</p>
+<p>JVM为每个已加载的类型（类或接口）都维护一个常量池，池中的数据项像数组一样，是通过索引访问的</p>
+<p>运行时常量池中包括在编译期就已经确定的数值字面量，也包括运行期解释后才能获得的方法或字段引用</p>
+<p>运行时常量池相对于常量池的重要特征是：具备动态性</p>
+<p>当创建类或接口的运行时常量池所需空间超过方法区能提供的最大值时，抛出OOM异常</p>
+</li>
+<li><p>方法区演进细节</p>
+<p>JDK1.6及之前：有永久代（permanent generation），静态变量存放在永久代上</p>
+<p>JDK1.7：有永久代，字符串常量池、静态变量从永久代移除，保存在堆中</p>
+<p>JDK1.8及之后：无永久代，类型信息、字段、方法、常量保存在本地内存的元空间，字符串常量池、静态变量仍在堆中</p>
+</li>
+<li><p>使用元空间替代永久代原因：</p>
+<p>1）永久代空间大小是难以确定的，如果动态加载类过多，容易产生永久代OOM。而元空间不在虚拟机中，使用本地内存</p>
+<p>2）对永久代进行调优是困难的</p>
+</li>
+<li><p>StringTable调整原因：</p>
+<p>JDK7将StringTable放到堆空间，因为永久代回收在Full GC时才会发生，StringTable回收效率不高。开发中会使用大量字符串，容易导致永久代内存不足</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//三个对象的数据都在Eden区，对象实例都在Java堆中分配</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticObjTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">        <span class="comment">//staticObj随Test类型信息存放在方法区</span></span><br><span class="line">        <span class="keyword">static</span> ObjectHolder staticObj = <span class="keyword">new</span> ObjectHolder();</span><br><span class="line">        <span class="comment">//instanceObj随Test对象实例存放在Java堆</span></span><br><span class="line">        ObjectHolder instanceObj = <span class="keyword">new</span> ObjectHolder();</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">//localObj存放在foo()方法栈帧的局部变量表中</span></span><br><span class="line">            ObjectHolder localObj = <span class="keyword">new</span> ObjectHolder();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectHolder</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Test test = <span class="keyword">new</span> Test();</span><br><span class="line">        test.foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>方法区的垃圾收集</p>
+<p>《Java虚拟机规范》不要求对方法区实现垃圾收集（如JDK11时期的ZGC收集器不支持类卸载）</p>
+<p>类型卸载条件严苛，但方法区的收集有时又是必要的</p>
+<p>方法区的垃圾收集主要包括：常量池中废弃的常量和不再使用的类型</p>
+<p>方法区常量池中主要存放的两大类常量：字面量和符号引用。字面量比较接近Java语言中常量的概念，如文本字符串、被声明为final的常量值等；符号引用属于编译原理方面的概念，包括类和接口的全限定名、字段名称和描述符、方法名称和描述符</p>
+<p>Hotspot虚拟机只要常量池中的常量没有被其他地方引用，就可以被回收（与回收Java堆中的对象类似）</p>
+<p>回收类型需要满足三个条件：</p>
+<p>1）该类的所有实例都已经被回收，也就是堆中不存在该类及其任何派生子类的实例</p>
+<p>2）加载该类的类加载器已经被回收（很难达成）</p>
+<p>3）该类对应的java.lang.Class对象没有在任何地方被引用，无法通过反射访问该类的方法</p>
+<p>Java虚拟机允许对满足以上三个条件的类进行回收（不是必然被回收），Hotspot虚拟机提供了-XX:+TraceClassgc参数进行控制，还可以使用-verbose:class以及-XX:+TraceClass-Loading、-XX:+TraceClassUnLoading查看类加载和卸载信息</p>
+<p>在大量使用反射、动态代理、CGLib等字节码框架，动态生成JSP以及OSGi等频繁自定义类加载器的场景中，通常需要Java虚拟机具备类卸载能力</p>
+</li>
+</ul>
+<h5 id="对象实例化"><a href="#对象实例化" class="headerlink" title="对象实例化"></a>对象实例化</h5><ul>
+<li><p>创建对象的方式</p>
+<p>new（变形：Xxx的静态方法、XxxBuilder/XxxFactory的静态方法）</p>
+<p>Class的newInstance()：反射，只能调用无参构造器，权限必须是public</p>
+<p>Constructor的newInstance(Xxx)：反射，可以调用有参、无参构造器，权限没有要求</p>
+<p>使用clone()：不调用构造器，当前类需要实现Cloneable接口，实现clone()方法</p>
+<p>使用反序列化：从文件/网络中获取对象的二进制流</p>
+<p>第三方库Objenesis</p>
+</li>
+<li><p>创建对象的步骤</p>
+<ol>
+<li>判断对象对应的类是否加载、链接、初始化</li>
+<li>为对象分配内存（如果内存规整：指针碰撞，如果内存不规整：虚拟机维护一个列表/空闲列表分配）</li>
+<li>处理并发安全问题（采用CAS失败重试、区域加锁保证更新的原子性；每个线程预先分配一块TLAB）</li>
+<li>初始化分配的空间（设置所有属性默认值，保证对象字段在不赋值时可以直接使用）</li>
+<li>设置对象的对象头</li>
+<li>执行init方法进行初始化</li>
+</ol>
+</li>
+<li><p>对象内存布局</p>
+<ol>
+<li><p>对象头（Header），包含两部分：</p>
+<p>1）运行时元数据（Mark Word）：哈希值（HashCode）、GC分代年龄、锁状态标志、线程持有的锁、偏向线程ID、偏向时间戳</p>
+<p>2）类型指针：指向类元数据InstanceKlass，确定该对象所属类型</p>
+<p>如果是数组，还需记录数组长度</p>
+</li>
+<li><p>实例数据（Instance Data）：是对象真正存储的有效信息，包括程序代码中定义的各类型字段（包括从父类继承的和本身拥有的字段）</p>
+<p>规则：相同宽度的字段分配在一起、父类定义的变量出现在子类前、如果CompactFields参数为true（默认为true），子类窄变量可能插入到父类变量的空隙</p>
+</li>
+<li><p>对齐填充（Padding）：非必须，仅起到占位符作用</p>
+</li>
+</ol>
+</li>
+</ul>
+<h5 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h5><p>直接内存是在Java堆外、直接向系统申请的内存空间</p>
+<p>直接内存不属于虚拟机运行时数据区，也不是《Java虚拟机规范》定义的内存区域</p>
+<p>来源于NIO，通过存在堆中的DirectByteBuffer操作Native内存</p>
+<p>通常，访问直接内存的速度优于堆，Java的NIO库允许Java程序使用直接内存作为数据缓冲区</p>
+<ul>
+<li><p>直接内存也可能出现OOM异常</p>
+<p>直接内存在堆外，大小不受堆空间限制，但堆和直接内存总和依然受限于操作系统最大内存<br>直接内存分配回收成本高、不受JVM内存回收管理</p>
+<p>直接内存大小可以使用MaxDirectMemorySize设置（默认与堆空间最大值相同）</p>
+</li>
+</ul>
+<h4 id="4-执行引擎"><a href="#4-执行引擎" class="headerlink" title="4. 执行引擎"></a>4. 执行引擎</h4><p>执行引擎是Java虚拟机核心组成部分之一</p>
+<p>物理机的执行引擎建立在处理器、缓存、指令集和操作系统层面上，而虚拟机的执行引擎由软件自行实现，可以不受物理条件制约指定指令集与执行引擎的体系结构，能够执行不被硬件直接支持的指令集格式</p>
+<p>JVM的主要任务是负责装载字节码到其内部，执行引擎的任务是将字节码文件解释/编译为对应平台的本地机器指令</p>
+<ul>
+<li><p>解释器（Interpreter）与JIT编译器</p>
+<p>解释器：Java虚拟机启动时按照预定义的规范对字节码采用逐行解释的方式执行，将字节码转化为本地机器指令执行</p>
+<p>JIT（Just In Time Compiler）编译器：虚拟机将源代码直接编译成本地机器相关的机器语言</p>
+<p>Java是半编译半解释型语言：将解释执行与编译执行结合起来</p>
+</li>
+<li><p>解释器</p>
+<p>为了满足Java语言跨平台特性，JVM采用实时解释器（而不是静态编译的方式直接生成本地机器指令）</p>
+<p>解释器相当于运行时“翻译者”，将字节码文件翻译为对应平台的本地机器指令执行</p>
+<p>当一条字节码指令被执行完后，再根据PC寄存器中记录的下一条指令进行解释操作</p>
+<p>JVM使用过两种解释执行器：字节码解释器（过去）、模板解释器（现在）</p>
+<p>1）字节码解释器在执行时通过纯软件代码模拟字节码的执行，效率低下</p>
+<p>2）模板解释器将每条字节码和一个模板函数相关联，由模板函数产生字节码对应的机器码，提高解释性能</p>
+<p>解释器在设计和实现上简单，目前基于解释器执行是低效的代名词</p>
+</li>
+<li><p>JIT编译器</p>
+<p>Hotspot VM采用解释器与即时编译器并存的结构，取长补短</p>
+<p>当程序启动后，解释器可以马上发挥作用；而编译器把代码编译成本地代码需要时间，但编译后执行效率更高</p>
+<p>对于服务端应用，启动时间并非关注重点：Java虚拟机启动时，解释器首先发挥作用，而不必等即时编译器全部编译完成；随着时间推移，编译器发挥作用，根据热点探测功能将有价值的字节码编译为本地机器指令，执行效率更高（在编译器进行激进优化不成立时，解释器是编译器的“逃生门”）</p>
+<p>机器在热机状态（启动运行一段时间后）可以承受的负载要大于冷机状态（刚启动）</p>
+</li>
+<li><p>Java中的“编译期”</p>
+<p>可能指前端编译器把.java文件转变为.class文件的过程（javac）</p>
+<p>也可能指虚拟机的后端运行编译器（JIT编译器）把字节码转变为机器码的过程（Hotspot的C1、C2编译器）</p>
+<p>还可能指使用静态提前编译器（AOT编译器）直接把.java文件编译成本地机器代码的过程</p>
+</li>
+<li><p>热点代码及探测方式</p>
+<p>一个被多次调用的方法，或一个方法体内循环次数较多的循环体都可以被称为“热点代码”</p>
+<p>由于JIT编译器编译为本地机器指令发生在方法的执行过程中，因此也被称为栈上替换，或简称OSR（On Stack Replacement）编译</p>
+<p>Hotspot VM采用基于计数器的热点探测，为每个方法建立两个计数器：方法调用计数器（Invocation Counter）和回边计数器（Back Edge Counter）</p>
+</li>
+<li><p>方法调用计数器</p>
+<p>用于统计方法被调用的次数，默认阈值在Client模式下为1500次，Server模式下为10000.超过阈值会触发JIT编译</p>
+<p>阈值可以通过-XX:CompileThreshold人为设定</p>
+<p>当一个方法被调用时，先检查该方法是否存在被JIT编译过的版本，如果存在，则优先使用编译后的本地代码执行。如果不存在，则方法调用计数器值+1，然后判断方法调用计数器与回边计数器只和是否超过方法调用计数器的阈值。如果超过阈值，会向即时编译器提交该方法的代码编译请求</p>
+</li>
+<li><p>热度衰减</p>
+<p>方法调用计数器统计的并不是方法被调用的绝对次数，而是相对执行频率，即一段时间内方法被调用的次数。当超过一定时间限度，如果方法的调用次数仍不足以提交给即时编译器编译，该方法的调用计数器会减少一半。这个过程称为方法调用计数器热度的衰减（Counter Decay），这段时间称为方法统计的半衰周期（Counter Half Life Time）</p>
+<p>进行热度衰减是在虚拟机进行垃圾收集时顺便进行的，可以使用-XX:-UseCounterDecay关闭热度衰减（统计绝对次数），只要系统运行时间足够长，绝大部分代码都会编译成本地代码</p>
+<p>使用-XX:CounterHalfLifeTime设置半衰周期时间，单位是秒</p>
+</li>
+<li><p>回边计数器</p>
+<p>用于统计方法中循环体代码执行的次数</p>
+<p>在字节码中遇到控制流向后跳转的指令称为“回边”（Back Edge）</p>
+</li>
+<li><p>HotSpot设置程序执行方式</p>
+<p>-Xint：完全采用解释器模式执行程序</p>
+<p>-Xcomp：完全采用即时编译器模式执行程序，如果即时编译出现问题，解释器会介入执行</p>
+<p>-Xmixed：采用解释器+即时编译器混合模式执行程序（默认情况）</p>
+</li>
+<li><p>HotSpot中JIT分类</p>
+<p>HotSpot内嵌有两个JIT编译器：Client Compiler和Server Compiler，简称为C1编译器和C2编译器</p>
+<p>-client：指定Java虚拟机运行在Client模式下，并使用C1编译器。C1编译器对字节码进行简单优化，耗时短</p>
+<p>-server：指定Java虚拟机运行在Server模式下，并使用C2编译器。C2编译器进行耗时长的优化及激进优化，但优化的代码执行效率更高</p>
+</li>
+<li><p>C1编译器和C2编译器的不同优化策略</p>
+<p>C1编译器优化：</p>
+<p>1）方法内联：将引用的函数代码编译到引用点处，减少栈帧的生成，减少参数传递及跳转过程</p>
+<p>2）去虚拟化：对唯一的实现类进行内联</p>
+<p>3）冗余消除：在运行期间把一些不会执行的代码折叠掉</p>
+<p>C2编译器优化主要在全局层面，基于逃逸分析：</p>
+<p>1）标量替换：用标量值代替聚合对象的属性值</p>
+<p>2）栈上分配：对于未逃逸的对象分配在栈而不是堆</p>
+<p>3）同步消除：清除同步操作，通常指synchronized</p>
+</li>
+</ul>
+</div><div class="post-copyright"><blockquote><p>Original author: Liu Sai</p><p>Original link: <a href="http://example.com/2021/09/11/JVM/">http://example.com/2021/09/11/JVM/</a></p><p>Copyright Notice: Please indicate the source of the reprint (must retain the author's signature and link)</p></blockquote></div><div class="tags"><a href="/tags/JVM/">JVM</a></div><div class="post-share"><div class="social-share"><span>Share:</span></div></div><div class="post-nav"><a href="/2021/08/23/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8B%EF%BC%89/" class="next">社区项目（下）</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">Contents</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM"><span class="toc-text">JVM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-text">一. 内存与垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-JVM%E4%B8%8EJava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-text">1. JVM与Java体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#JVM%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">JVM生命周期</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#JVM%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="toc-text">JVM发展历程</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-text">2. 类加载子系统</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%88%86%E7%B1%BB"><span class="toc-text">类加载器分类</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">双亲委派机制</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA"><span class="toc-text">3. 运行时数据区</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-text">线程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-text">程序计数寄存器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="toc-text">虚拟机栈</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A0%86"><span class="toc-text">堆</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-text">方法区</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="toc-text">对象实例化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98"><span class="toc-text">直接内存</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E"><span class="toc-text">4. 执行引擎</span></a></li></ol></li></ol></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/09/11/JVM/">JVM</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/08/23/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8B%EF%BC%89/">社区项目（下）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/07/09/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%8A%EF%BC%89/">社区项目（上）</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/27/SpringMVC/">SpringMVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/20/Maven/">Maven</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/19/MyBatis/">MyBatis</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/06/05/Spring/">Spring</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/21/JavaWeb%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ACookie%E3%80%81Session%E3%80%81Filter%E3%80%81JSON%E3%80%81AJAX/">JavaWeb（三）：Cookie、Session、Filter、JSON、AJAX</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/JavaWeb%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AXML%E3%80%81Servlet%E3%80%81jsp%E3%80%81EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81JSTL%E6%A0%87%E7%AD%BE%E5%BA%93/">JavaWeb（二）：XML、Servlet、jsp、EL表达式、JSTL标签库</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/05/08/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/">尚硅谷书城项目</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> Tags</i></div><div class="tagcloud"><a href="/tags/JDBC/" style="font-size: 15px;">JDBC</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Maven/" style="font-size: 15px;">Maven</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/JavaWeb/" style="font-size: 15px;">JavaWeb</a> <a href="/tags/MyBatis/" style="font-size: 15px;">MyBatis</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/MySQL/" style="font-size: 15px;">MySQL</a> <a href="/tags/SpringMVC/" style="font-size: 15px;">SpringMVC</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 15px;">数据结构</a> <a href="/tags/JVM/" style="font-size: 15px;">JVM</a> <a href="/tags/%E5%B0%9A%E7%A1%85%E8%B0%B7%E4%B9%A6%E5%9F%8E%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">尚硅谷书城项目</a> <a href="/tags/%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE/" style="font-size: 15px;">社区项目</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> Archive</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> Blogroll</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Site Map</a> |  <a href="/atom.xml">Subscribe to this site</a> |  <a href="/about/">Contact the blogger</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次，本站总访客数:<i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>人</p><p><span> Copyright &copy;<a href="/." rel="nofollow">Liu Sai.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a target="_blank" rel="noopener" href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.5"></script><div id="fullscreen-img" class="hide"><span class="close"></span></div><script type="text/javascript" src="/js/imgview.js?v=2.0.5" async></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.5" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>
